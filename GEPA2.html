@@ -1,0 +1,1322 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;"><meta http-equiv="x-dns-prefetch-control" content="off"><meta name="x-poe-datastore-behavior" content="disabled"><meta name="x-poe-allow-downloads" content="true"><script src="https://puc.poecdn.net/standard.3ef2c256959faf5a756d.js"></script>
+    <meta charset="utf-8">
+    <title>Poe</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="https://puc.poecdn.net/disableWebRTC.9710cebe07429a9e8e06.js"></script><script src="https://puc.poecdn.net/tw.b9024aecac666455e183.js"></script><script src="https://puc.poecdn.net/deps.faccd16000d314dc16d5.js"></script><script src="https://puc.poecdn.net/exports.b0f0f482cdeb5302b0b9.js"></script><script src="https://puc.poecdn.net/renderer.75c73ae6b4235f62945a.js"></script><script>Object.defineProperty(exports, "__esModule", {value: true}); function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; } function _optionalChain(ops) { let lastAccessLHS = undefined; let value = ops[0]; let i = 1; while (i < ops.length) { const op = ops[i]; const fn = ops[i + 1]; i += 2; if ((op === 'optionalAccess' || op === 'optionalCall') && value == null) { return undefined; } if (op === 'access' || op === 'optionalAccess') { lastAccessLHS = value; value = fn(value); } else if (op === 'call' || op === 'optionalCall') { value = fn((...args) => value.call(lastAccessLHS, ...args)); lastAccessLHS = undefined; } } return value; }var _react = require('react'); var _react2 = _interopRequireDefault(_react);
+var _lucidereact = require('lucide-react');
+var _framermotion = require('framer-motion');
+
+ function ParetoSelectionDeepDive() {
+  const [selectedCandidate, setSelectedCandidate] = _react.useState.call(void 0, null);
+  const [animationStep, setAnimationStep] = _react.useState.call(void 0, 0);
+  const [isPlaying, setIsPlaying] = _react.useState.call(void 0, false);
+  const [hoveredInstance, setHoveredInstance] = _react.useState.call(void 0, null);
+  const [showComparison, setShowComparison] = _react.useState.call(void 0, false);
+  const [selectedStrategy, setSelectedStrategy] = _react.useState.call(void 0, 'pareto');
+  const [comparisonView, setComparisonView] = _react.useState.call(void 0, 'overview'); // overview, tree, metrics, timeline
+  
+  // Enhanced candidate data with more realistic performance variations
+  const candidatePerformance = [
+    { id: 'A', name: 'Candidate A', instance1: 85, instance2: 60, instance3: 70, instance4: 65, avg: 70, color: 'bg-blue-500', strategy: 'Chain-of-thought focused' },
+    { id: 'B', name: 'Candidate B', instance1: 70, instance2: 90, instance3: 65, instance4: 75, avg: 75, color: 'bg-green-500', strategy: 'Retrieval-augmented' },
+    { id: 'C', name: 'Candidate C', instance1: 60, instance2: 70, instance3: 95, instance4: 70, avg: 74, color: 'bg-purple-500', strategy: 'Multi-step reasoning' },
+    { id: 'D', name: 'Candidate D', instance1: 75, instance2: 75, instance3: 75, instance4: 88, avg: 78, color: 'bg-orange-500', strategy: 'Hybrid approach' },
+    { id: 'E', name: 'Candidate E', instance1: 80, instance2: 65, instance3: 60, instance4: 60, avg: 66, color: 'bg-red-500', strategy: 'Direct answering' }
+  ];
+
+  const instances = [
+    { name: 'Instance 1', type: 'Simple Factual', difficulty: 'Easy' },
+    { name: 'Instance 2', type: 'Multi-hop Reasoning', difficulty: 'Medium' },
+    { name: 'Instance 3', type: 'Complex Analysis', difficulty: 'Hard' },
+    { name: 'Instance 4', type: 'Creative Problem', difficulty: 'Hard' }
+  ];
+
+  // Determine Pareto optimal candidates for each instance
+  const getParetoOptimal = (instanceIndex) => {
+    const performances = candidatePerformance.map(c => ({
+      id: c.id,
+      score: [c.instance1, c.instance2, c.instance3, c.instance4][instanceIndex]
+    }));
+    const maxScore = Math.max(...performances.map(p => p.score));
+    return performances.filter(p => p.score === maxScore).map(p => p.id);
+  };
+
+  // Calculate Pareto frequency for each candidate
+  const getParetoFrequency = (candidateId) => {
+    return instances.reduce((count, _, idx) => 
+      count + (getParetoOptimal(idx).includes(candidateId) ? 1 : 0), 0
+    );
+  };
+
+  const evolutionSteps = [
+    {
+      step: 1,
+      action: "Initialize with base system",
+      candidates: ["Base"],
+      selected: "Base",
+      reason: "Starting point",
+      performance: 65,
+      discovery: null
+    },
+    {
+      step: 2,
+      action: "Generate first mutations",
+      candidates: ["Base", "A", "B"],
+      selected: "A",
+      reason: "Best on Instance 1 (85%)",
+      performance: 70,
+      discovery: "Chain-of-thought improves simple queries"
+    },
+    {
+      step: 3,
+      action: "Diverse exploration",
+      candidates: ["Base", "A", "B", "C"],
+      selected: "B",
+      reason: "Best on Instance 2 (90%)",
+      performance: 75,
+      discovery: "Retrieval helps multi-hop reasoning"
+    },
+    {
+      step: 4,
+      action: "Continued diversification",
+      candidates: ["A", "B", "C", "D"],
+      selected: "C",
+      reason: "Best on Instance 3 (95%)",
+      performance: 74,
+      discovery: "Multi-step approach excels at complex tasks"
+    },
+    {
+      step: 5,
+      action: "Balanced selection",
+      candidates: ["A", "B", "C", "D", "E"],
+      selected: "D",
+      reason: "Best on Instance 4 (88%)",
+      performance: 78,
+      discovery: "Hybrid strategy achieves breakthrough!"
+    }
+  ];
+
+  // Animation control
+  _react.useEffect.call(void 0, () => {
+    if (isPlaying && animationStep < evolutionSteps.length - 1) {
+      const timer = setTimeout(() => {
+        setAnimationStep(animationStep + 1);
+      }, 2000);
+      return () => clearTimeout(timer);
+    } else if (animationStep === evolutionSteps.length - 1) {
+      setIsPlaying(false);
+    }
+  }, [isPlaying, animationStep]);
+
+  const resetAnimation = () => {
+    setAnimationStep(0);
+    setIsPlaying(false);
+  };
+
+  // Interactive performance chart data
+  const getPerformanceData = () => {
+    if (selectedStrategy === 'naive') {
+      return evolutionSteps.map(step => ({
+        step: step.step,
+        performance: step.step <= 2 ? step.performance : 75,
+        strategy: 'Naive'
+      }));
+    }
+    return evolutionSteps.map(step => ({
+      step: step.step,
+      performance: step.performance,
+      strategy: 'Pareto'
+    }));
+  };
+
+  // Comparison data for strategies
+  const strategyComparison = {
+    naive: {
+      name: "Naive Selection",
+      color: "red",
+      icon: _lucidereact.XCircle,
+      finalPerformance: 75,
+      explorationDiversity: 20,
+      convergenceSpeed: 90,
+      robustness: 30,
+      sampleEfficiency: 40,
+      pros: [
+        "Simple to implement",
+        "Fast initial convergence",
+        "Low computational overhead"
+      ],
+      cons: [
+        "Gets stuck in local optima",
+        "Poor exploration of solution space",
+        "Misses instance-specific optimizations",
+        "Limited long-term improvement"
+      ],
+      algorithm: `while budget_remaining:
+    best = argmax(avg_performance)
+    mutate(candidates[best])
+    # Always same candidate!`,
+      treeStructure: "linear"
+    },
+    pareto: {
+      name: "Pareto Selection",
+      color: "green",
+      icon: _lucidereact.CheckCircle,
+      finalPerformance: 78,
+      explorationDiversity: 85,
+      convergenceSpeed: 70,
+      robustness: 90,
+      sampleEfficiency: 95,
+      pros: [
+        "Maintains diversity",
+        "Finds instance-specific solutions",
+        "Avoids premature convergence",
+        "Discovers breakthrough strategies"
+      ],
+      cons: [
+        "Slightly more complex",
+        "Slower initial progress",
+        "Requires instance-wise evaluation"
+      ],
+      algorithm: `for each instance i:
+    P*[i] = {best candidates for i}
+C = unique(∪ P*[i])
+sample from C weighted by frequency`,
+      treeStructure: "branching"
+    }
+  };
+
+  const currentStrategyData = strategyComparison[selectedStrategy];
+
+  return (
+    _react2.default.createElement('div', { className: "min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 p-4 md:p-8"      ,}
+      , _react2.default.createElement('div', { className: "max-w-7xl mx-auto space-y-8"  ,}
+
+        /* Enhanced Header */
+        , _react2.default.createElement(_framermotion.motion.div, { 
+          initial: { opacity: 0, y: -20 },
+          animate: { opacity: 1, y: 0 },
+          className: "text-center space-y-4" ,}
+
+          , _react2.default.createElement('div', { className: "inline-flex items-center gap-3 bg-gradient-to-r from-purple-500 to-blue-600 px-6 py-3 rounded-full shadow-lg"         ,}
+            , _react2.default.createElement(_lucidereact.Target, { className: "w-6 h-6 text-white animate-pulse"   ,} )
+            , _react2.default.createElement('span', { className: "text-white font-bold text-lg"  ,}, "Pareto-Based Selection Strategy"  )
+          )
+          , _react2.default.createElement('h1', { className: "text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight"     ,}, "The Key to GEPA's "
+                , _react2.default.createElement('span', { className: "bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"    ,}, "Diversity & Performance"  )
+          )
+          , _react2.default.createElement('p', { className: "text-lg md:text-xl text-gray-300 max-w-4xl mx-auto"    ,}, "How GEPA avoids local optima by maintaining diverse, high-performing candidates across different task instances"
+
+          )
+        )
+
+        /* Complete Strategy Comparison Section */
+        , _react2.default.createElement(_framermotion.motion.div, { 
+          initial: { opacity: 0, scale: 0.95 },
+          animate: { opacity: 1, scale: 1 },
+          transition: { delay: 0.1 },
+          className: "bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-white/20 shadow-xl"       ,}
+
+          , _react2.default.createElement('h2', { className: "text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3"       ,}
+            , _react2.default.createElement(_lucidereact.Brain, { className: "w-8 h-8 text-purple-400"  ,} ), "Complete Strategy Comparison"
+
+          )
+
+          /* Strategy Toggle */
+          , _react2.default.createElement('div', { className: "mb-6",}
+            , _react2.default.createElement('div', { className: "flex flex-col sm:flex-row gap-4"   ,}
+              , _react2.default.createElement('div', { className: "flex gap-2 flex-1"  ,}
+                , _react2.default.createElement('button', {
+                  onClick: () => setSelectedStrategy('pareto'),
+                  className: `flex-1 px-4 py-3 rounded-lg transition-all flex items-center justify-center gap-2 ${
+                    selectedStrategy === 'pareto' 
+                      ? 'bg-green-500 text-white shadow-lg' 
+                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                  }`,}
+
+                  , _react2.default.createElement(_lucidereact.CheckCircle, { className: "w-5 h-5" ,} ), "Pareto Selection"
+
+                )
+                , _react2.default.createElement('button', {
+                  onClick: () => setSelectedStrategy('naive'),
+                  className: `flex-1 px-4 py-3 rounded-lg transition-all flex items-center justify-center gap-2 ${
+                    selectedStrategy === 'naive' 
+                      ? 'bg-red-500 text-white shadow-lg' 
+                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                  }`,}
+
+                  , _react2.default.createElement(_lucidereact.XCircle, { className: "w-5 h-5" ,} ), "Naive Selection"
+
+                )
+              )
+
+              /* View Toggle */
+              , _react2.default.createElement('div', { className: "flex gap-1 bg-gray-800 p-1 rounded-lg"    ,}
+                , ['overview', 'tree', 'metrics', 'timeline'].map((view) => (
+                  _react2.default.createElement('button', {
+                    key: view,
+                    onClick: () => setComparisonView(view),
+                    className: `px-3 py-2 rounded-md text-sm capitalize transition-all ${
+                      comparisonView === view
+                        ? 'bg-blue-500 text-white'
+                        : 'text-gray-400 hover:text-white'
+                    }`,}
+
+                    , view
+                  )
+                ))
+              )
+            )
+          )
+
+          /* Comparison Views */
+          , _react2.default.createElement(_framermotion.AnimatePresence, { mode: "wait",}
+            , comparisonView === 'overview' && (
+              _react2.default.createElement(_framermotion.motion.div, {
+                key: "overview",
+                initial: { opacity: 0, y: 20 },
+                animate: { opacity: 1, y: 0 },
+                exit: { opacity: 0, y: -20 },
+                className: "grid grid-cols-1 lg:grid-cols-2 gap-6"   ,}
+
+                /* Current Strategy Details */
+                , _react2.default.createElement('div', { className: `bg-${currentStrategyData.color}-500/10 border border-${currentStrategyData.color}-500/30 rounded-xl p-6`,}
+                  , _react2.default.createElement('div', { className: "flex items-center gap-3 mb-4"   ,}
+                    , _react2.default.createElement(currentStrategyData.icon, { className: `w-8 h-8 text-${currentStrategyData.color}-400`,} )
+                    , _react2.default.createElement('h3', { className: `text-xl font-bold text-${currentStrategyData.color}-400`,}
+                      , currentStrategyData.name
+                    )
+                  )
+
+                  , _react2.default.createElement('div', { className: "space-y-4",}
+                    , _react2.default.createElement('div', { className: "bg-gray-900/50 rounded-lg p-4"  ,}
+                      , _react2.default.createElement('h4', { className: "text-white font-semibold mb-2"  ,}, "Algorithm")
+                      , _react2.default.createElement('pre', { className: "text-sm text-gray-300 font-mono whitespace-pre-wrap"   ,}
+                        , currentStrategyData.algorithm
+                      )
+                    )
+
+                    , _react2.default.createElement('div', { className: "grid grid-cols-2 gap-4"  ,}
+                      , _react2.default.createElement('div', null
+                        , _react2.default.createElement('h4', { className: "text-green-400 font-semibold mb-2 flex items-center gap-2"     ,}
+                          , _react2.default.createElement(_lucidereact.CheckCircle, { className: "w-4 h-4" ,} ), "Advantages"
+
+                        )
+                        , _react2.default.createElement('ul', { className: "space-y-1",}
+                          , currentStrategyData.pros.map((pro, idx) => (
+                            _react2.default.createElement('li', { key: idx, className: "text-sm text-gray-300 flex items-start gap-2"    ,}
+                              , _react2.default.createElement('span', { className: "text-green-400 mt-1" ,}, "•")
+                              , pro
+                            )
+                          ))
+                        )
+                      )
+
+                      , _react2.default.createElement('div', null
+                        , _react2.default.createElement('h4', { className: "text-red-400 font-semibold mb-2 flex items-center gap-2"     ,}
+                          , _react2.default.createElement(_lucidereact.XCircle, { className: "w-4 h-4" ,} ), "Limitations"
+
+                        )
+                        , _react2.default.createElement('ul', { className: "space-y-1",}
+                          , currentStrategyData.cons.map((con, idx) => (
+                            _react2.default.createElement('li', { key: idx, className: "text-sm text-gray-300 flex items-start gap-2"    ,}
+                              , _react2.default.createElement('span', { className: "text-red-400 mt-1" ,}, "•")
+                              , con
+                            )
+                          ))
+                        )
+                      )
+                    )
+                  )
+                )
+
+                /* Performance Comparison */
+                , _react2.default.createElement('div', { className: "space-y-6",}
+                  , _react2.default.createElement('div', { className: "bg-white/5 rounded-xl p-6"  ,}
+                    , _react2.default.createElement('h4', { className: "text-white font-semibold mb-4"  ,}, "Performance Metrics" )
+                    , _react2.default.createElement('div', { className: "space-y-3",}
+                      , [
+                        { label: 'Final Performance', value: currentStrategyData.finalPerformance, suffix: '%' },
+                        { label: 'Exploration Diversity', value: currentStrategyData.explorationDiversity, suffix: '%' },
+                        { label: 'Convergence Speed', value: currentStrategyData.convergenceSpeed, suffix: '%' },
+                        { label: 'Robustness', value: currentStrategyData.robustness, suffix: '%' },
+                        { label: 'Sample Efficiency', value: currentStrategyData.sampleEfficiency, suffix: '%' }
+                      ].map((metric, idx) => (
+                        _react2.default.createElement('div', { key: idx,}
+                          , _react2.default.createElement('div', { className: "flex justify-between text-sm mb-1"   ,}
+                            , _react2.default.createElement('span', { className: "text-gray-300",}, metric.label)
+                            , _react2.default.createElement('span', { className: `font-bold ${
+                              metric.value >= 80 ? 'text-green-400' :
+                              metric.value >= 60 ? 'text-yellow-400' :
+                              'text-red-400'
+                            }`,}
+                              , metric.value, metric.suffix
+                            )
+                          )
+                          , _react2.default.createElement('div', { className: "w-full bg-gray-700 rounded-full h-2"   ,}
+                            , _react2.default.createElement(_framermotion.motion.div, {
+                              initial: { width: 0 },
+                              animate: { width: `${metric.value}%` },
+                              transition: { duration: 1, delay: idx * 0.1 },
+                              className: `h-2 rounded-full ${
+                                selectedStrategy === 'pareto' ? 'bg-green-500' : 'bg-red-500'
+                              }`,}
+                            )
+                          )
+                        )
+                      ))
+                    )
+                  )
+
+                  , _react2.default.createElement('div', { className: "bg-white/5 rounded-xl p-6"  ,}
+                    , _react2.default.createElement('h4', { className: "text-white font-semibold mb-4"  ,}, "Side-by-Side Comparison" )
+                    , _react2.default.createElement('table', { className: "w-full text-sm" ,}
+                      , _react2.default.createElement('thead', null
+                        , _react2.default.createElement('tr', { className: "border-b border-gray-600" ,}
+                          , _react2.default.createElement('th', { className: "text-left text-gray-400 p-2"  ,}, "Metric")
+                          , _react2.default.createElement('th', { className: "text-center text-green-400 p-2"  ,}, "Pareto")
+                          , _react2.default.createElement('th', { className: "text-center text-red-400 p-2"  ,}, "Naive")
+                        )
+                      )
+                      , _react2.default.createElement('tbody', null
+                        , _react2.default.createElement('tr', { className: "border-b border-gray-700" ,}
+                          , _react2.default.createElement('td', { className: "p-2 text-gray-300" ,}, "Final Score" )
+                          , _react2.default.createElement('td', { className: "p-2 text-center text-green-400 font-bold"   ,}, "78%")
+                          , _react2.default.createElement('td', { className: "p-2 text-center text-red-400 font-bold"   ,}, "75%")
+                        )
+                        , _react2.default.createElement('tr', { className: "border-b border-gray-700" ,}
+                          , _react2.default.createElement('td', { className: "p-2 text-gray-300" ,}, "Unique Solutions" )
+                          , _react2.default.createElement('td', { className: "p-2 text-center text-green-400 font-bold"   ,}, "4")
+                          , _react2.default.createElement('td', { className: "p-2 text-center text-red-400 font-bold"   ,}, "1")
+                        )
+                        , _react2.default.createElement('tr', { className: "border-b border-gray-700" ,}
+                          , _react2.default.createElement('td', { className: "p-2 text-gray-300" ,}, "Evolution Branches" )
+                          , _react2.default.createElement('td', { className: "p-2 text-center text-green-400 font-bold"   ,}, "Multiple")
+                          , _react2.default.createElement('td', { className: "p-2 text-center text-red-400 font-bold"   ,}, "Linear")
+                        )
+                        , _react2.default.createElement('tr', null
+                          , _react2.default.createElement('td', { className: "p-2 text-gray-300" ,}, "Breakthrough Potential" )
+                          , _react2.default.createElement('td', { className: "p-2 text-center text-green-400 font-bold"   ,}, "High")
+                          , _react2.default.createElement('td', { className: "p-2 text-center text-red-400 font-bold"   ,}, "Low")
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+
+            , comparisonView === 'tree' && (
+              _react2.default.createElement(_framermotion.motion.div, {
+                key: "tree",
+                initial: { opacity: 0, y: 20 },
+                animate: { opacity: 1, y: 0 },
+                exit: { opacity: 0, y: -20 },
+                className: "grid grid-cols-1 lg:grid-cols-2 gap-6"   ,}
+
+                /* Pareto Evolution Tree */
+                , _react2.default.createElement('div', { className: "bg-green-500/10 border border-green-500/30 rounded-xl p-6"    ,}
+                  , _react2.default.createElement('h3', { className: "text-xl font-semibold text-green-400 mb-4 flex items-center gap-2"      ,}
+                    , _react2.default.createElement(_lucidereact.GitBranch, { className: "w-6 h-6" ,} ), "Pareto Evolution Tree"
+
+                  )
+                  , _react2.default.createElement('div', { className: "relative",}
+                    , _react2.default.createElement('svg', { className: "w-full h-96" , viewBox: "0 0 400 400"   ,}
+                      /* Base node */
+                      , _react2.default.createElement('circle', { cx: "200", cy: "50", r: "20", fill: "#6b7280",} )
+                      , _react2.default.createElement('text', { x: "200", y: "55", textAnchor: "middle", fill: "white", fontSize: "12",}, "Base")
+
+                      /* Branches */
+                      , _react2.default.createElement('line', { x1: "200", y1: "70", x2: "100", y2: "150", stroke: "#3b82f6", strokeWidth: "2",} )
+                      , _react2.default.createElement('line', { x1: "200", y1: "70", x2: "200", y2: "150", stroke: "#10b981", strokeWidth: "2",} )
+                      , _react2.default.createElement('line', { x1: "200", y1: "70", x2: "300", y2: "150", stroke: "#8b5cf6", strokeWidth: "2",} )
+
+                      /* Level 2 nodes */
+                      , _react2.default.createElement('circle', { cx: "100", cy: "150", r: "20", fill: "#3b82f6",} )
+                      , _react2.default.createElement('text', { x: "100", y: "155", textAnchor: "middle", fill: "white", fontSize: "12",}, "A")
+
+                      , _react2.default.createElement('circle', { cx: "200", cy: "150", r: "20", fill: "#10b981",} )
+                      , _react2.default.createElement('text', { x: "200", y: "155", textAnchor: "middle", fill: "white", fontSize: "12",}, "B")
+
+                      , _react2.default.createElement('circle', { cx: "300", cy: "150", r: "20", fill: "#8b5cf6",} )
+                      , _react2.default.createElement('text', { x: "300", y: "155", textAnchor: "middle", fill: "white", fontSize: "12",}, "C")
+
+                      /* Further branches */
+                      , _react2.default.createElement('line', { x1: "300", y1: "170", x2: "350", y2: "250", stroke: "#f59e0b", strokeWidth: "2",} )
+                      , _react2.default.createElement('circle', { cx: "350", cy: "250", r: "25", fill: "#f59e0b",} )
+                      , _react2.default.createElement('text', { x: "350", y: "255", textAnchor: "middle", fill: "white", fontSize: "12",}, "D")
+
+                      /* Labels */
+                      , _react2.default.createElement('text', { x: "50", y: "180", fill: "#3b82f6", fontSize: "10",}, "Inst 1" )
+                      , _react2.default.createElement('text', { x: "180", y: "180", fill: "#10b981", fontSize: "10",}, "Inst 2" )
+                      , _react2.default.createElement('text', { x: "280", y: "180", fill: "#8b5cf6", fontSize: "10",}, "Inst 3" )
+                      , _react2.default.createElement('text', { x: "330", y: "280", fill: "#f59e0b", fontSize: "10",}, "Breakthrough!")
+                    )
+                    , _react2.default.createElement('div', { className: "mt-4 text-center" ,}
+                      , _react2.default.createElement('p', { className: "text-green-400 font-semibold" ,}, "Diverse Branching Structure"  )
+                      , _react2.default.createElement('p', { className: "text-gray-400 text-sm" ,}, "Multiple paths lead to breakthrough discoveries"     )
+                    )
+                  )
+                )
+
+                /* Naive Evolution Tree */
+                , _react2.default.createElement('div', { className: "bg-red-500/10 border border-red-500/30 rounded-xl p-6"    ,}
+                  , _react2.default.createElement('h3', { className: "text-xl font-semibold text-red-400 mb-4 flex items-center gap-2"      ,}
+                    , _react2.default.createElement(_lucidereact.AlertCircle, { className: "w-6 h-6" ,} ), "Naive Evolution Tree"
+
+                  )
+                  , _react2.default.createElement('div', { className: "relative",}
+                    , _react2.default.createElement('svg', { className: "w-full h-96" , viewBox: "0 0 400 400"   ,}
+                      /* Base node */
+                      , _react2.default.createElement('circle', { cx: "200", cy: "50", r: "20", fill: "#6b7280",} )
+                      , _react2.default.createElement('text', { x: "200", y: "55", textAnchor: "middle", fill: "white", fontSize: "12",}, "Base")
+
+                      /* Single branch */
+                      , _react2.default.createElement('line', { x1: "200", y1: "70", x2: "200", y2: "130", stroke: "#ef4444", strokeWidth: "2",} )
+                      , _react2.default.createElement('circle', { cx: "200", cy: "150", r: "20", fill: "#3b82f6",} )
+                      , _react2.default.createElement('text', { x: "200", y: "155", textAnchor: "middle", fill: "white", fontSize: "12",}, "Best")
+
+                      /* Failed attempts */
+                      , _react2.default.createElement('line', { x1: "200", y1: "170", x2: "200", y2: "230", stroke: "#ef4444", strokeWidth: "2", strokeDasharray: "5,5",} )
+                      , _react2.default.createElement('circle', { cx: "200", cy: "250", r: "15", fill: "#ef4444", opacity: "0.5",} )
+                      , _react2.default.createElement('text', { x: "200", y: "255", textAnchor: "middle", fill: "white", fontSize: "10",}, "Fail")
+
+                      , _react2.default.createElement('line', { x1: "200", y1: "270", x2: "200", y2: "330", stroke: "#ef4444", strokeWidth: "2", strokeDasharray: "5,5",} )
+                      , _react2.default.createElement('circle', { cx: "200", cy: "350", r: "15", fill: "#ef4444", opacity: "0.5",} )
+                      , _react2.default.createElement('text', { x: "200", y: "355", textAnchor: "middle", fill: "white", fontSize: "10",}, "Fail")
+
+                      /* Labels */
+                      , _react2.default.createElement('text', { x: "250", y: "150", fill: "#ef4444", fontSize: "10",}, "Always same" )
+                      , _react2.default.createElement('text', { x: "250", y: "250", fill: "#ef4444", fontSize: "10",}, "No improvement" )
+                      , _react2.default.createElement('text', { x: "250", y: "350", fill: "#ef4444", fontSize: "10",}, "Local optimum" )
+                    )
+                    , _react2.default.createElement('div', { className: "mt-4 text-center" ,}
+                      , _react2.default.createElement('p', { className: "text-red-400 font-semibold" ,}, "Linear Search Pattern"  )
+                      , _react2.default.createElement('p', { className: "text-gray-400 text-sm" ,}, "Single path leads to stagnation"    )
+                    )
+                  )
+                )
+              )
+            )
+
+            , comparisonView === 'metrics' && (
+              _react2.default.createElement(_framermotion.motion.div, {
+                key: "metrics",
+                initial: { opacity: 0, y: 20 },
+                animate: { opacity: 1, y: 0 },
+                exit: { opacity: 0, y: -20 },
+                className: "space-y-6",}
+
+                /* Radar Chart Comparison */
+                , _react2.default.createElement('div', { className: "bg-white/5 rounded-xl p-6"  ,}
+                  , _react2.default.createElement('h3', { className: "text-xl font-semibold text-white mb-4"   ,}, "Performance Radar" )
+                  , _react2.default.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 gap-6"   ,}
+                    , _react2.default.createElement('div', { className: "relative h-64" ,}
+                      , _react2.default.createElement('svg', { className: "w-full h-full" , viewBox: "0 0 300 300"   ,}
+                        /* Grid */
+                        , [1, 2, 3, 4, 5].map(level => (
+                          _react2.default.createElement('polygon', {
+                            key: level,
+                            points: "150,50 250,100 250,200 150,250 50,200 50,100"     ,
+                            fill: "none",
+                            stroke: "#374151",
+                            strokeWidth: "1",
+                            transform: `scale(${level * 0.2})`,
+                            style: { transformOrigin: '150px 150px' },}
+                          )
+                        ))
+
+                        /* Axes */
+                        , _react2.default.createElement('line', { x1: "150", y1: "150", x2: "150", y2: "50", stroke: "#6b7280",} )
+                        , _react2.default.createElement('line', { x1: "150", y1: "150", x2: "250", y2: "100", stroke: "#6b7280",} )
+                        , _react2.default.createElement('line', { x1: "150", y1: "150", x2: "250", y2: "200", stroke: "#6b7280",} )
+                        , _react2.default.createElement('line', { x1: "150", y1: "150", x2: "150", y2: "250", stroke: "#6b7280",} )
+                        , _react2.default.createElement('line', { x1: "150", y1: "150", x2: "50", y2: "200", stroke: "#6b7280",} )
+                        , _react2.default.createElement('line', { x1: "150", y1: "150", x2: "50", y2: "100", stroke: "#6b7280",} )
+
+                        /* Pareto polygon */
+                        , _react2.default.createElement('polygon', {
+                          points: "150,70 220,110 220,180 150,210 80,180 80,110"     ,
+                          fill: "#10b981",
+                          fillOpacity: "0.3",
+                          stroke: "#10b981",
+                          strokeWidth: "2",}
+                        )
+
+                        /* Naive polygon */
+                        , _react2.default.createElement('polygon', {
+                          points: "150,110 180,130 180,170 150,190 120,170 120,130"     ,
+                          fill: "#ef4444",
+                          fillOpacity: "0.3",
+                          stroke: "#ef4444",
+                          strokeWidth: "2",}
+                        )
+
+                        /* Labels */
+                        , _react2.default.createElement('text', { x: "150", y: "40", textAnchor: "middle", fill: "white", fontSize: "12",}, "Performance")
+                        , _react2.default.createElement('text', { x: "260", y: "100", textAnchor: "start", fill: "white", fontSize: "12",}, "Diversity")
+                        , _react2.default.createElement('text', { x: "260", y: "200", textAnchor: "start", fill: "white", fontSize: "12",}, "Robustness")
+                        , _react2.default.createElement('text', { x: "150", y: "270", textAnchor: "middle", fill: "white", fontSize: "12",}, "Efficiency")
+                        , _react2.default.createElement('text', { x: "40", y: "200", textAnchor: "end", fill: "white", fontSize: "12",}, "Exploration")
+                        , _react2.default.createElement('text', { x: "40", y: "100", textAnchor: "end", fill: "white", fontSize: "12",}, "Innovation")
+                      )
+                      , _react2.default.createElement('div', { className: "mt-4 flex justify-center gap-4"   ,}
+                        , _react2.default.createElement('div', { className: "flex items-center gap-2"  ,}
+                          , _react2.default.createElement('div', { className: "w-4 h-4 bg-green-500 rounded"   ,} )
+                          , _react2.default.createElement('span', { className: "text-sm text-gray-300" ,}, "Pareto")
+                        )
+                        , _react2.default.createElement('div', { className: "flex items-center gap-2"  ,}
+                          , _react2.default.createElement('div', { className: "w-4 h-4 bg-red-500 rounded"   ,} )
+                          , _react2.default.createElement('span', { className: "text-sm text-gray-300" ,}, "Naive")
+                        )
+                      )
+                    )
+
+                    , _react2.default.createElement('div', { className: "space-y-4",}
+                      , _react2.default.createElement('h4', { className: "text-white font-semibold" ,}, "Key Insights" )
+                      , _react2.default.createElement('div', { className: "space-y-3",}
+                        , _react2.default.createElement(_framermotion.motion.div, { 
+                          whileHover: { x: 5 },
+                          className: "bg-blue-500/10 border border-blue-500/30 rounded-lg p-3"    ,}
+
+                          , _react2.default.createElement('div', { className: "flex items-center gap-2"  ,}
+                            , _react2.default.createElement(_lucidereact.Activity, { className: "w-5 h-5 text-blue-400"  ,} )
+                            , _react2.default.createElement('span', { className: "text-blue-400 font-medium" ,}, "Performance Gap" )
+                          )
+                          , _react2.default.createElement('p', { className: "text-sm text-gray-300 mt-1"  ,}, "Pareto achieves 78% vs Naive's 75% final score"
+
+                          )
+                        )
+
+                        , _react2.default.createElement(_framermotion.motion.div, { 
+                          whileHover: { x: 5 },
+                          className: "bg-purple-500/10 border border-purple-500/30 rounded-lg p-3"    ,}
+
+                          , _react2.default.createElement('div', { className: "flex items-center gap-2"  ,}
+                            , _react2.default.createElement(_lucidereact.Shuffle, { className: "w-5 h-5 text-purple-400"  ,} )
+                            , _react2.default.createElement('span', { className: "text-purple-400 font-medium" ,}, "Diversity Advantage" )
+                          )
+                          , _react2.default.createElement('p', { className: "text-sm text-gray-300 mt-1"  ,}, "4x more solution diversity with Pareto selection"
+
+                          )
+                        )
+
+                        , _react2.default.createElement(_framermotion.motion.div, { 
+                          whileHover: { x: 5 },
+                          className: "bg-green-500/10 border border-green-500/30 rounded-lg p-3"    ,}
+
+                          , _react2.default.createElement('div', { className: "flex items-center gap-2"  ,}
+                            , _react2.default.createElement(_lucidereact.TrendingUp, { className: "w-5 h-5 text-green-400"  ,} )
+                            , _react2.default.createElement('span', { className: "text-green-400 font-medium" ,}, "Long-term Growth" )
+                          )
+                          , _react2.default.createElement('p', { className: "text-sm text-gray-300 mt-1"  ,}, "Pareto continues improving while Naive plateaus"
+
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+
+                /* Instance-specific Performance */
+                , _react2.default.createElement('div', { className: "bg-white/5 rounded-xl p-6"  ,}
+                  , _react2.default.createElement('h3', { className: "text-xl font-semibold text-white mb-4"   ,}, "Instance-Specific Performance" )
+                  , _react2.default.createElement('div', { className: "space-y-4",}
+                    , instances.map((instance, idx) => (
+                      _react2.default.createElement('div', { key: idx, className: "space-y-2",}
+                        , _react2.default.createElement('div', { className: "flex justify-between items-center"  ,}
+                          , _react2.default.createElement('div', null
+                            , _react2.default.createElement('span', { className: "text-white font-medium" ,}, instance.name)
+                            , _react2.default.createElement('span', { className: "text-gray-400 text-sm ml-2"  ,}, "(", instance.type, ")")
+                          )
+                          , _react2.default.createElement('span', { className: `text-sm px-2 py-1 rounded ${
+                            instance.difficulty === 'Easy' ? 'bg-green-500/20 text-green-400' :
+                            instance.difficulty === 'Medium' ? 'bg-yellow-500/20 text-yellow-400' :
+                            'bg-red-500/20 text-red-400'
+                          }`,}
+                            , instance.difficulty
+                          )
+                        )
+                        , _react2.default.createElement('div', { className: "grid grid-cols-2 gap-2"  ,}
+                          , _react2.default.createElement('div', { className: "bg-green-500/10 rounded-lg p-2"  ,}
+                            , _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, "Pareto Best" )
+                            , _react2.default.createElement('div', { className: "text-green-400 font-bold" ,}
+                              , Math.max(...candidatePerformance.map(c => 
+                                [c.instance1, c.instance2, c.instance3, c.instance4][idx]
+                              )), "%"
+                            )
+                          )
+                          , _react2.default.createElement('div', { className: "bg-red-500/10 rounded-lg p-2"  ,}
+                            , _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, "Naive Best" )
+                            , _react2.default.createElement('div', { className: "text-red-400 font-bold" ,}
+                              , _optionalChain([candidatePerformance, 'access', _2 => _2.find, 'call', _3 => _3(c => c.avg === Math.max(...candidatePerformance.map(x => x.avg))), 'optionalAccess', _4 => _4[`instance${idx + 1}`]]) || 0, "%"
+                            )
+                          )
+                        )
+                      )
+                    ))
+                  )
+                )
+              )
+            )
+
+            , comparisonView === 'timeline' && (
+              _react2.default.createElement(_framermotion.motion.div, {
+                key: "timeline",
+                initial: { opacity: 0, y: 20 },
+                animate: { opacity: 1, y: 0 },
+                exit: { opacity: 0, y: -20 },
+                className: "space-y-6",}
+
+                , _react2.default.createElement('div', { className: "bg-white/5 rounded-xl p-6"  ,}
+                  , _react2.default.createElement('h3', { className: "text-xl font-semibold text-white mb-4"   ,}, "Evolution Timeline Comparison"  )
+
+                  /* Timeline Chart */
+                  , _react2.default.createElement('div', { className: "relative h-96" ,}
+                    , _react2.default.createElement('div', { className: "absolute inset-0 grid grid-cols-5 gap-4"    ,}
+                      , evolutionSteps.map((step, idx) => (
+                        _react2.default.createElement('div', { key: idx, className: "relative",}
+                          , _react2.default.createElement('div', { className: "absolute top-0 left-1/2 transform -translate-x-1/2 w-px h-full bg-gray-600"       ,} )
+
+                          /* Pareto line */
+                          , _react2.default.createElement(_framermotion.motion.div, {
+                            initial: { height: 0 },
+                            animate: { height: `${(step.performance / 100) * 80}%` },
+                            transition: { duration: 0.5, delay: idx * 0.2 },
+                            className: "absolute bottom-0 left-1/2 transform -translate-x-1/2 w-2 bg-green-500 rounded-t"       ,}
+                          )
+
+                          /* Naive line */
+                          , _react2.default.createElement(_framermotion.motion.div, {
+                            initial: { height: 0 },
+                            animate: { 
+                              height: `${((idx <= 1 ? step.performance : 75) / 100) * 80}%` 
+                            },
+                            transition: { duration: 0.5, delay: idx * 0.2 },
+                            className: "absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-x-2 w-2 bg-red-500 rounded-t"        ,}
+                          )
+
+                          , _react2.default.createElement('div', { className: "absolute bottom-0 left-1/2 transform -translate-x-1/2 text-center"     ,}
+                            , _react2.default.createElement('div', { className: "text-xs text-gray-400 mt-2"  ,}, "Step " , step.step)
+                          )
+                        )
+                      ))
+                    )
+
+                    /* Y-axis labels */
+                    , _react2.default.createElement('div', { className: "absolute left-0 top-0 h-full flex flex-col justify-between text-xs text-gray-400"        ,}
+                      , _react2.default.createElement('span', null, "100%")
+                      , _react2.default.createElement('span', null, "75%")
+                      , _react2.default.createElement('span', null, "50%")
+                      , _react2.default.createElement('span', null, "25%")
+                      , _react2.default.createElement('span', null, "0%")
+                    )
+                  )
+
+                  , _react2.default.createElement('div', { className: "mt-6 flex justify-center gap-6"   ,}
+                    , _react2.default.createElement('div', { className: "flex items-center gap-2"  ,}
+                      , _react2.default.createElement('div', { className: "w-4 h-4 bg-green-500 rounded"   ,} )
+                      , _react2.default.createElement('span', { className: "text-sm text-gray-300" ,}, "Pareto Evolution" )
+                    )
+                    , _react2.default.createElement('div', { className: "flex items-center gap-2"  ,}
+                      , _react2.default.createElement('div', { className: "w-4 h-4 bg-red-500 rounded"   ,} )
+                      , _react2.default.createElement('span', { className: "text-sm text-gray-300" ,}, "Naive Evolution" )
+                    )
+                  )
+
+                  /* Key Events */
+                  , _react2.default.createElement('div', { className: "mt-6 space-y-3" ,}
+                    , _react2.default.createElement('h4', { className: "text-white font-semibold" ,}, "Key Events" )
+                    , _react2.default.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 gap-3"   ,}
+                      , _react2.default.createElement(_framermotion.motion.div, { 
+                        whileHover: { scale: 1.02 },
+                        className: "bg-green-500/10 border border-green-500/30 rounded-lg p-3"    ,}
+
+                        , _react2.default.createElement('div', { className: "flex items-center gap-2 mb-1"   ,}
+                          , _react2.default.createElement(_lucidereact.Lightbulb, { className: "w-4 h-4 text-green-400"  ,} )
+                          , _react2.default.createElement('span', { className: "text-green-400 font-medium text-sm"  ,}, "Pareto Discoveries" )
+                        )
+                        , _react2.default.createElement('ul', { className: "text-xs text-gray-300 space-y-1"  ,}
+                          , _react2.default.createElement('li', null, "Step 2: Chain-of-thought optimization"   )
+                          , _react2.default.createElement('li', null, "Step 3: Retrieval augmentation"   )
+                          , _react2.default.createElement('li', null, "Step 4: Multi-step reasoning"   )
+                          , _react2.default.createElement('li', null, "Step 5: Hybrid breakthrough (78%)"    )
+                        )
+                      )
+
+                      , _react2.default.createElement(_framermotion.motion.div, { 
+                        whileHover: { scale: 1.02 },
+                        className: "bg-red-500/10 border border-red-500/30 rounded-lg p-3"    ,}
+
+                        , _react2.default.createElement('div', { className: "flex items-center gap-2 mb-1"   ,}
+                          , _react2.default.createElement(_lucidereact.AlertCircle, { className: "w-4 h-4 text-red-400"  ,} )
+                          , _react2.default.createElement('span', { className: "text-red-400 font-medium text-sm"  ,}, "Naive Stagnation" )
+                        )
+                        , _react2.default.createElement('ul', { className: "text-xs text-gray-300 space-y-1"  ,}
+                          , _react2.default.createElement('li', null, "Step 2: Initial improvement to 75%"     )
+                          , _react2.default.createElement('li', null, "Step 3: No progress (stuck)"    )
+                          , _react2.default.createElement('li', null, "Step 4: Failed mutations"   )
+                          , _react2.default.createElement('li', null, "Step 5: Still at local optimum"     )
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+
+        /* Interactive Problem Demonstration */
+        , _react2.default.createElement(_framermotion.motion.div, { 
+          initial: { opacity: 0, scale: 0.95 },
+          animate: { opacity: 1, scale: 1 },
+          transition: { delay: 0.1 },
+          className: "bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-white/20 shadow-xl"       ,}
+
+          , _react2.default.createElement('h2', { className: "text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3"       ,}
+            , _react2.default.createElement(_lucidereact.Zap, { className: "w-8 h-8 text-red-400"  ,} ), "The Problem with Naive \"Select Best\" Approach"
+
+          )
+
+          , _react2.default.createElement('div', { className: "grid grid-cols-1 lg:grid-cols-2 gap-8"   ,}
+            , _react2.default.createElement('div', { className: "space-y-4",}
+              , _react2.default.createElement(_framermotion.motion.div, { 
+                whileHover: { scale: 1.02 },
+                className: "bg-red-500/10 border border-red-500/30 rounded-xl p-6 transition-all duration-300"      ,}
+
+                , _react2.default.createElement('h4', { className: "text-red-400 font-semibold mb-3 flex items-center gap-2"     ,}
+                  , _react2.default.createElement(_lucidereact.XCircle, { className: "w-5 h-5" ,} ), "Local Optima Trap"
+
+                )
+                , _react2.default.createElement('p', { className: "text-gray-300 text-sm mb-4"  ,}, "Traditional approaches select the candidate with the highest average performance, leading to premature convergence on a single strategy."
+
+
+                )
+                , _react2.default.createElement('div', { className: "bg-gray-900/50 rounded-lg p-4 overflow-x-auto"   ,}
+                  , _react2.default.createElement('div', { className: "text-red-400 font-mono text-sm whitespace-pre"   ,}
+, `while budget not exhausted:
+  k ← argmax(average_performance)
+  mutate(candidate[k])
+  # Always picks same "best" candidate!`
+                  )
+                )
+              )
+
+              , _react2.default.createElement(_framermotion.motion.div, { 
+                whileHover: { scale: 1.02 },
+                className: "bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-6"    ,}
+
+                , _react2.default.createElement('h4', { className: "text-yellow-400 font-semibold mb-3 flex items-center gap-2"     ,}
+                  , _react2.default.createElement(_lucidereact.Info, { className: "w-5 h-5" ,} ), "Limited Exploration"
+
+                )
+                , _react2.default.createElement('p', { className: "text-gray-300 text-sm" ,}, "This creates a linear search tree where all mutations stem from a single \"best\" candidate, missing potentially better solutions that excel at specific instances."
+
+
+                )
+              )
+            )
+
+            , _react2.default.createElement('div', { className: "space-y-4",}
+              , _react2.default.createElement(_framermotion.motion.div, { 
+                whileHover: { scale: 1.02 },
+                className: "bg-white/5 rounded-xl p-6"  ,}
+
+                , _react2.default.createElement('h4', { className: "text-white font-semibold mb-4"  ,}, "Experimental Evidence" )
+                , _react2.default.createElement('div', { className: "space-y-3",}
+                  , _react2.default.createElement(_framermotion.motion.div, { 
+                    whileHover: { x: 5 },
+                    className: "flex justify-between items-center p-3 bg-red-500/20 rounded-lg cursor-pointer"      ,}
+
+                    , _react2.default.createElement('span', { className: "text-gray-300",}, "SelectBestCandidate Strategy" )
+                    , _react2.default.createElement('span', { className: "text-red-400 font-bold text-lg"  ,}, "62.33%")
+                  )
+                  , _react2.default.createElement(_framermotion.motion.div, { 
+                    whileHover: { x: 5 },
+                    className: "flex justify-between items-center p-3 bg-green-500/20 rounded-lg cursor-pointer"      ,}
+
+                    , _react2.default.createElement('span', { className: "text-gray-300",}, "Pareto-based Strategy" )
+                    , _react2.default.createElement('span', { className: "text-green-400 font-bold text-lg"  ,}, "70.50%")
+                  )
+                  , _react2.default.createElement('div', { className: "text-center mt-4 p-4 bg-gradient-to-r from-green-500/10 to-blue-500/10 rounded-lg"      ,}
+                    , _react2.default.createElement('span', { className: "text-green-400 font-bold text-2xl"  ,}, "+8.17%")
+                    , _react2.default.createElement('div', { className: "text-gray-400 text-sm" ,}, "improvement on HotpotQA"  )
+                  )
+                )
+              )
+            )
+          )
+        )
+
+        /* Interactive Performance Matrix */
+        , _react2.default.createElement(_framermotion.motion.div, { 
+          initial: { opacity: 0, scale: 0.95 },
+          animate: { opacity: 1, scale: 1 },
+          transition: { delay: 0.2 },
+          className: "bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-white/20"      ,}
+
+          , _react2.default.createElement('h2', { className: "text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3"       ,}
+            , _react2.default.createElement(_lucidereact.BarChart3, { className: "w-8 h-8 text-blue-400"  ,} ), "Interactive Performance Analysis"
+
+          )
+
+          , _react2.default.createElement('div', { className: "space-y-6",}
+            , _react2.default.createElement('div', { className: "bg-white/5 rounded-xl p-6 overflow-x-auto"   ,}
+              , _react2.default.createElement('h4', { className: "text-white font-semibold mb-4"  ,}, "Performance Matrix" )
+              , _react2.default.createElement('table', { className: "w-full text-sm" ,}
+                , _react2.default.createElement('thead', null
+                  , _react2.default.createElement('tr', { className: "border-b border-gray-600" ,}
+                    , _react2.default.createElement('th', { className: "text-left text-gray-400 p-3"  ,}, "Candidate")
+                    , instances.map((inst, idx) => (
+                      _react2.default.createElement('th', { 
+                        key: idx, 
+                        className: "text-center text-gray-400 p-3 cursor-pointer hover:text-white transition-colors"     ,
+                        onMouseEnter: () => setHoveredInstance(idx),
+                        onMouseLeave: () => setHoveredInstance(null),}
+
+                        , _react2.default.createElement('div', null, inst.name)
+                        , _react2.default.createElement('div', { className: "text-xs font-normal" ,}, inst.type)
+                      )
+                    ))
+                    , _react2.default.createElement('th', { className: "text-center text-gray-400 p-3"  ,}
+                      , _react2.default.createElement('div', null, "Average")
+                      , _react2.default.createElement('div', { className: "text-xs font-normal" ,}, "Overall")
+                    )
+                  )
+                )
+                , _react2.default.createElement('tbody', null
+                  , candidatePerformance.map((candidate, idx) => (
+                    _react2.default.createElement(_framermotion.motion.tr, { 
+                      key: idx,
+                      whileHover: { backgroundColor: 'rgba(255, 255, 255, 0.05)' },
+                      className: `border-b border-gray-700 cursor-pointer transition-all ${
+                        selectedCandidate === candidate.id ? 'bg-blue-500/20' : ''
+                      }`,
+                      onClick: () => setSelectedCandidate(candidate.id === selectedCandidate ? null : candidate.id),}
+
+                      , _react2.default.createElement('td', { className: "p-3",}
+                        , _react2.default.createElement('div', { className: "flex items-center gap-3"  ,}
+                          , _react2.default.createElement(_framermotion.motion.div, { 
+                            whileHover: { scale: 1.2 },
+                            className: `w-3 h-3 rounded-full ${candidate.color}`,} 
+                          )
+                          , _react2.default.createElement('div', null
+                            , _react2.default.createElement('span', { className: "text-white font-medium" ,}, candidate.name)
+                            , _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, candidate.strategy)
+                          )
+                        )
+                      )
+                      , [candidate.instance1, candidate.instance2, candidate.instance3, candidate.instance4].map((score, scoreIdx) => {
+                        const isOptimal = getParetoOptimal(scoreIdx).includes(candidate.id);
+                        const isHovered = hoveredInstance === scoreIdx;
+                        return (
+                          _react2.default.createElement('td', { 
+                            key: scoreIdx, 
+                            className: `text-center p-3 transition-all ${
+                              isOptimal 
+                                ? 'text-green-400 font-bold' 
+                                : 'text-gray-300'
+                            } ${isHovered ? 'bg-white/5' : ''}`,}
+
+                            , _react2.default.createElement(_framermotion.motion.div, {
+                              initial: { scale: 1 },
+                              animate: { scale: isOptimal && isHovered ? 1.1 : 1 },}
+
+                              , score, "%"
+                              , isOptimal && (
+                                _react2.default.createElement(_framermotion.motion.span, { 
+                                  initial: { opacity: 0 },
+                                  animate: { opacity: 1 },
+                                  className: "ml-1",}
+
+                                  , _react2.default.createElement(_lucidereact.Sparkles, { className: "w-4 h-4 inline text-yellow-400"   ,} )
+                                )
+                              )
+                            )
+                          )
+                        );
+                      })
+                      , _react2.default.createElement('td', { className: "text-center p-3" ,}
+                        , _react2.default.createElement('span', { className: `font-medium ${
+                          candidate.avg >= 75 ? 'text-green-400' : 
+                          candidate.avg >= 70 ? 'text-yellow-400' : 
+                          'text-gray-300'
+                        }`,}
+                          , candidate.avg, "%"
+                        )
+                      )
+                    )
+                  ))
+                )
+              )
+              , _react2.default.createElement('div', { className: "mt-4 flex items-center gap-4 text-xs text-gray-400"     ,}
+                , _react2.default.createElement('div', { className: "flex items-center gap-1"  ,}
+                  , _react2.default.createElement(_lucidereact.Sparkles, { className: "w-4 h-4 text-yellow-400"  ,} )
+                  , _react2.default.createElement('span', null, "Pareto optimal for instance"   )
+                )
+                , _react2.default.createElement('div', null, "Click rows to highlight"   )
+              )
+            )
+
+            /* Pareto Frequency Visualization */
+            , _react2.default.createElement('div', { className: "grid grid-cols-1 lg:grid-cols-2 gap-6"   ,}
+              , _react2.default.createElement(_framermotion.motion.div, { 
+                whileHover: { scale: 1.02 },
+                className: "bg-white/5 rounded-xl p-6"  ,}
+
+                , _react2.default.createElement('h4', { className: "text-white font-semibold mb-4"  ,}, "Pareto Frequency Analysis"  )
+                , _react2.default.createElement('div', { className: "space-y-3",}
+                  , candidatePerformance.map((candidate, idx) => {
+                    const frequency = getParetoFrequency(candidate.id);
+                    const probability = frequency / instances.length;
+                    
+                    return (
+                      _react2.default.createElement(_framermotion.motion.div, { 
+                        key: idx, 
+                        whileHover: { x: 5 },
+                        className: "flex items-center gap-3"  ,}
+
+                        , _react2.default.createElement('div', { className: `w-3 h-3 rounded-full ${candidate.color}`,} )
+                        , _react2.default.createElement('div', { className: "flex-1",}
+                          , _react2.default.createElement('div', { className: "flex justify-between items-center mb-1"   ,}
+                            , _react2.default.createElement('span', { className: "text-white text-sm" ,}, candidate.name)
+                            , _react2.default.createElement('span', { className: "text-gray-400 text-sm" ,}, frequency, "/", instances.length, " instances" )
+                          )
+                          , _react2.default.createElement('div', { className: "w-full bg-gray-700 rounded-full h-2 overflow-hidden"    ,}
+                            , _react2.default.createElement(_framermotion.motion.div, { 
+                              initial: { width: 0 },
+                              animate: { width: `${probability * 100}%` },
+                              transition: { duration: 1, delay: idx * 0.1 },
+                              className: `h-2 rounded-full ${candidate.color}`,}
+                            )
+                          )
+                        )
+                        , _react2.default.createElement('span', { className: "text-gray-300 text-sm w-12 text-right font-medium"    ,}
+                          , (probability * 100).toFixed(0), "%"
+                        )
+                      )
+                    );
+                  })
+                )
+              )
+
+              /* Selection Probability Calculator */
+              , _react2.default.createElement(_framermotion.motion.div, { 
+                whileHover: { scale: 1.02 },
+                className: "bg-white/5 rounded-xl p-6"  ,}
+
+                , _react2.default.createElement('h4', { className: "text-white font-semibold mb-4"  ,}, "Selection Probability" )
+                , _react2.default.createElement('div', { className: "space-y-4",}
+                  , _react2.default.createElement('div', { className: "bg-gray-900/50 rounded-lg p-4"  ,}
+                    , _react2.default.createElement('div', { className: "text-blue-400 font-mono text-sm mb-2"   ,}, "P(select Φ) ∝ frequency"   )
+                    , _react2.default.createElement('div', { className: "text-gray-400 text-xs" ,}, "Candidates optimal for more instances have higher selection probability"
+
+                    )
+                  )
+
+                  , _react2.default.createElement(_framermotion.AnimatePresence, null
+                    , selectedCandidate && (
+                      _react2.default.createElement(_framermotion.motion.div, {
+                        initial: { opacity: 0, height: 0 },
+                        animate: { opacity: 1, height: 'auto' },
+                        exit: { opacity: 0, height: 0 },
+                        className: "bg-blue-500/10 border border-blue-500/30 rounded-lg p-4"    ,}
+
+                        , _react2.default.createElement('div', { className: "text-blue-400 font-medium mb-2"  ,}
+                          , _optionalChain([candidatePerformance, 'access', _5 => _5.find, 'call', _6 => _6(c => c.id === selectedCandidate), 'optionalAccess', _7 => _7.name])
+                        )
+                        , _react2.default.createElement('div', { className: "text-sm text-gray-300" ,}, "Optimal for: "
+                            , 
+                            instances.filter((_, idx) => 
+                              getParetoOptimal(idx).includes(selectedCandidate)
+                            ).map(inst => inst.type).join(', ') || 'None'
+                          
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+
+        /* Interactive Evolution Timeline */
+        , _react2.default.createElement(_framermotion.motion.div, { 
+          initial: { opacity: 0, scale: 0.95 },
+          animate: { opacity: 1, scale: 1 },
+          transition: { delay: 0.3 },
+          className: "bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-white/20"      ,}
+
+          , _react2.default.createElement('div', { className: "flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4"       ,}
+            , _react2.default.createElement('h2', { className: "text-2xl md:text-3xl font-bold text-white flex items-center gap-3"      ,}
+              , _react2.default.createElement(_lucidereact.Network, { className: "w-8 h-8 text-green-400"  ,} ), "Evolution Timeline"
+
+            )
+
+            /* Animation Controls */
+            , _react2.default.createElement('div', { className: "flex items-center gap-3"  ,}
+              , _react2.default.createElement('button', {
+                onClick: () => setIsPlaying(!isPlaying),
+                className: "flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"         ,}
+
+                , isPlaying ? _react2.default.createElement(_lucidereact.Pause, { className: "w-4 h-4" ,} ) : _react2.default.createElement(_lucidereact.Play, { className: "w-4 h-4" ,} )
+                , isPlaying ? 'Pause' : 'Play'
+              )
+              , _react2.default.createElement('button', {
+                onClick: resetAnimation,
+                className: "flex items-center gap-2 bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors"         ,}
+
+                , _react2.default.createElement(_lucidereact.RefreshCw, { className: "w-4 h-4" ,} ), "Reset"
+
+              )
+            )
+          )
+
+          , _react2.default.createElement('div', { className: "space-y-6",}
+            , evolutionSteps.map((step, idx) => (
+              _react2.default.createElement(_framermotion.motion.div, { 
+                key: idx, 
+                initial: { opacity: 0.3 },
+                animate: { 
+                  opacity: idx <= animationStep ? 1 : 0.3,
+                  scale: idx === animationStep ? 1.02 : 1
+                },
+                transition: { duration: 0.5 },
+                className: "relative",}
+
+                , _react2.default.createElement('div', { className: "flex items-start gap-4 md:gap-6"   ,}
+                  , _react2.default.createElement('div', { className: "flex flex-col items-center"  ,}
+                    , _react2.default.createElement(_framermotion.motion.div, { 
+                      animate: { 
+                        scale: idx === animationStep ? [1, 1.2, 1] : 1
+                      },
+                      transition: { duration: 0.5 },
+                      className: `w-12 h-12 rounded-full flex items-center justify-center text-white font-bold ${
+                        idx <= animationStep 
+                          ? 'bg-gradient-to-r from-blue-500 to-purple-600' 
+                          : 'bg-gray-700'
+                      }`,}
+
+                      , idx < animationStep ? (
+                        _react2.default.createElement(_lucidereact.CheckCircle, { className: "w-6 h-6" ,} )
+                      ) : (
+                        step.step
+                      )
+                    )
+                    , idx < evolutionSteps.length - 1 && (
+                      _react2.default.createElement('div', { className: `w-0.5 h-16 mt-4 ${
+                        idx < animationStep ? 'bg-gradient-to-b from-blue-500 to-purple-600' : 'bg-gray-700'
+                      }`,} )
+                    )
+                  )
+
+                  , _react2.default.createElement('div', { className: "flex-1 bg-white/5 rounded-xl p-4 md:p-6"    ,}
+                    , _react2.default.createElement('div', { className: "grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6"    ,}
+                      , _react2.default.createElement('div', null
+                        , _react2.default.createElement('h4', { className: "text-white font-semibold mb-2"  ,}, step.action)
+                        , _react2.default.createElement('p', { className: "text-gray-400 text-sm mb-3"  ,}, "Selected: "
+                           , _react2.default.createElement('span', { className: "text-blue-400 font-medium" ,}, step.selected)
+                        )
+                        , _react2.default.createElement('p', { className: "text-gray-300 text-sm" ,}, step.reason)
+                      )
+
+                      , _react2.default.createElement('div', null
+                        , _react2.default.createElement('h5', { className: "text-gray-400 text-sm mb-2"  ,}, "Available Candidates" )
+                        , _react2.default.createElement('div', { className: "flex flex-wrap gap-2"  ,}
+                          , step.candidates.map((candidate, cIdx) => (
+                            _react2.default.createElement(_framermotion.motion.span, { 
+                              key: cIdx,
+                              whileHover: { scale: 1.1 },
+                              className: `px-3 py-1 rounded-full text-sm cursor-pointer ${
+                                candidate === step.selected 
+                                  ? 'bg-blue-500 text-white' 
+                                  : 'bg-gray-700 text-gray-300'
+                              }`,}
+
+                              , candidate
+                            )
+                          ))
+                        )
+                      )
+
+                      , _react2.default.createElement('div', null
+                        , _react2.default.createElement('h5', { className: "text-gray-400 text-sm mb-2"  ,}, "Impact")
+                        , _react2.default.createElement('div', { className: "flex items-center gap-2 mb-2"   ,}
+                          , _react2.default.createElement(_lucidereact.TrendingUp, { className: "w-4 h-4 text-green-400"  ,} )
+                          , _react2.default.createElement('span', { className: "text-green-400 font-bold" ,}, step.performance, "%")
+                        )
+                        , step.discovery && (
+                          _react2.default.createElement('p', { className: "text-sm text-purple-300 italic"  ,}, step.discovery)
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            ))
+          )
+
+          /* Performance Chart */
+          , _react2.default.createElement(_framermotion.motion.div, { 
+            initial: { opacity: 0 },
+            animate: { opacity: 1 },
+            transition: { delay: 0.5 },
+            className: "mt-8 bg-white/5 rounded-xl p-6"   ,}
+
+            , _react2.default.createElement('h4', { className: "text-white font-semibold mb-4"  ,}, "Performance Progression" )
+            , _react2.default.createElement('div', { className: "h-64 flex items-end gap-4"   ,}
+              , getPerformanceData().map((data, idx) => (
+                _react2.default.createElement(_framermotion.motion.div, { 
+                  key: idx,
+                  initial: { height: 0 },
+                  animate: { 
+                    height: idx <= animationStep ? `${(data.performance / 100) * 100}%` : 0
+                  },
+                  transition: { duration: 0.5, delay: idx * 0.1 },
+                  className: "flex-1 relative group"  ,}
+
+                  , _react2.default.createElement('div', { className: `w-full rounded-t-lg ${
+                    selectedStrategy === 'pareto' 
+                      ? 'bg-gradient-to-t from-blue-500 to-purple-500' 
+                      : 'bg-gradient-to-t from-red-500 to-orange-500'
+                  }`,} )
+                  , _react2.default.createElement('div', { className: "absolute -top-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity"       ,}
+                    , _react2.default.createElement('div', { className: "bg-gray-800 text-white text-xs px-2 py-1 rounded"     ,}
+                      , data.performance, "%"
+                    )
+                  )
+                  , _react2.default.createElement('div', { className: "text-center text-xs text-gray-400 mt-2"   ,}, "Step "
+                     , data.step
+                  )
+                )
+              ))
+            )
+          )
+        )
+
+        /* Key Benefits with Icons */
+        , _react2.default.createElement(_framermotion.motion.div, { 
+          initial: { opacity: 0, scale: 0.95 },
+          animate: { opacity: 1, scale: 1 },
+          transition: { delay: 0.4 },
+          className: "bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-white/20"      ,}
+
+          , _react2.default.createElement('h2', { className: "text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3"       ,}
+            , _react2.default.createElement(_lucidereact.Award, { className: "w-8 h-8 text-yellow-400"  ,} ), "Why Pareto Selection Works: Key Benefits"
+
+          )
+
+          , _react2.default.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"    ,}
+            , _react2.default.createElement(_framermotion.motion.div, { 
+              whileHover: { scale: 1.05, rotate: 1 },
+              className: "bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-xl p-6 border border-blue-400/30"      ,}
+
+              , _react2.default.createElement(_framermotion.motion.div, { 
+                whileHover: { rotate: 360 },
+                transition: { duration: 0.5 },
+                className: "w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mb-4"       ,}
+
+                , _react2.default.createElement(_lucidereact.Shuffle, { className: "w-6 h-6 text-white"  ,} )
+              )
+              , _react2.default.createElement('h4', { className: "text-white font-semibold mb-3"  ,}, "Prevents Premature Convergence"  )
+              , _react2.default.createElement('p', { className: "text-gray-300 text-sm" ,}, "By maintaining multiple candidates that excel at different instances, GEPA avoids getting stuck in local optima that naive selection would choose."
+
+
+              )
+            )
+
+            , _react2.default.createElement(_framermotion.motion.div, { 
+              whileHover: { scale: 1.05, rotate: -1 },
+              className: "bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-xl p-6 border border-purple-400/30"      ,}
+
+              , _react2.default.createElement(_framermotion.motion.div, { 
+                whileHover: { rotate: 360 },
+                transition: { duration: 0.5 },
+                className: "w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mb-4"       ,}
+
+                , _react2.default.createElement(_lucidereact.Users, { className: "w-6 h-6 text-white"  ,} )
+              )
+              , _react2.default.createElement('h4', { className: "text-white font-semibold mb-3"  ,}, "Encourages Specialization" )
+              , _react2.default.createElement('p', { className: "text-gray-300 text-sm" ,}, "Candidates that excel at specific instances get opportunities to evolve further, potentially discovering breakthrough strategies for those contexts."
+
+
+              )
+            )
+
+            , _react2.default.createElement(_framermotion.motion.div, { 
+              whileHover: { scale: 1.05, rotate: 1 },
+              className: "bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-xl p-6 border border-green-400/30"      ,}
+
+              , _react2.default.createElement(_framermotion.motion.div, { 
+                whileHover: { rotate: 360 },
+                transition: { duration: 0.5 },
+                className: "w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mb-4"       ,}
+
+                , _react2.default.createElement(_lucidereact.TrendingUp, { className: "w-6 h-6 text-white"  ,} )
+              )
+              , _react2.default.createElement('h4', { className: "text-white font-semibold mb-3"  ,}, "Frequency-based Fairness" )
+              , _react2.default.createElement('p', { className: "text-gray-300 text-sm" ,}, "Candidates that are optimal for more instances get higher selection probability, balancing exploration with exploitation effectively."
+
+
+              )
+            )
+          )
+
+          , _react2.default.createElement(_framermotion.motion.div, { 
+            whileHover: { scale: 1.02 },
+            className: "mt-8 bg-gradient-to-r from-green-500/10 to-blue-500/10 border border-green-400/30 rounded-xl p-6"       ,}
+
+            , _react2.default.createElement('h4', { className: "text-green-400 font-semibold mb-3 flex items-center gap-2"     ,}
+              , _react2.default.createElement(_lucidereact.Award, { className: "w-5 h-5" ,} ), "Empirical Validation"
+
+            )
+            , _react2.default.createElement('div', { className: "grid grid-cols-1 md:grid-cols-3 gap-6"   ,}
+              , _react2.default.createElement(_framermotion.motion.div, { 
+                whileHover: { y: -5 },
+                className: "text-center",}
+
+                , _react2.default.createElement('div', { className: "text-3xl font-bold text-green-400"  ,}, "+8.17%")
+                , _react2.default.createElement('div', { className: "text-gray-400 text-sm" ,}, "Performance improvement over naive selection"    )
+              )
+              , _react2.default.createElement(_framermotion.motion.div, { 
+                whileHover: { y: -5 },
+                className: "text-center",}
+
+                , _react2.default.createElement('div', { className: "text-3xl font-bold text-blue-400"  ,}, "35x")
+                , _react2.default.createElement('div', { className: "text-gray-400 text-sm" ,}, "More sample efficient than GRPO"    )
+              )
+              , _react2.default.createElement(_framermotion.motion.div, { 
+                whileHover: { y: -5 },
+                className: "text-center",}
+
+                , _react2.default.createElement('div', { className: "text-3xl font-bold text-purple-400"  ,}, "4 tasks" )
+                , _react2.default.createElement('div', { className: "text-gray-400 text-sm" ,}, "Consistent benefits across diverse domains"    )
+              )
+            )
+          )
+        )
+
+        /* Footer */
+        , _react2.default.createElement(_framermotion.motion.div, { 
+          initial: { opacity: 0 },
+          animate: { opacity: 1 },
+          transition: { delay: 0.5 },
+          className: "text-center text-gray-400 pt-6 border-t border-white/20"    ,}
+
+          , _react2.default.createElement('p', { className: "text-lg",}, "The "
+             , _react2.default.createElement('strong', { className: "text-white",}, "Pareto-based selection strategy"  ), " is key to GEPA's success"
+          )
+          , _react2.default.createElement('p', { className: "text-sm mt-2" ,}, "Maintaining diversity while focusing on performance leads to breakthrough discoveries"
+
+          )
+        )
+      )
+    )
+  );
+} exports.default = ParetoSelectionDeepDive;
+</script></head>
+  <body>
+  
+
+<div id="preview-app"></div></body></html>

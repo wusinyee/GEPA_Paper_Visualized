@@ -1,0 +1,636 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;"><meta http-equiv="x-dns-prefetch-control" content="off"><meta name="x-poe-datastore-behavior" content="disabled"><meta name="x-poe-allow-downloads" content="true"><script src="https://puc.poecdn.net/standard.3ef2c256959faf5a756d.js"></script>
+    <meta charset="utf-8">
+    <title>Poe</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="https://puc.poecdn.net/disableWebRTC.9710cebe07429a9e8e06.js"></script><script src="https://puc.poecdn.net/tw.b9024aecac666455e183.js"></script><script src="https://puc.poecdn.net/deps.faccd16000d314dc16d5.js"></script><script src="https://puc.poecdn.net/exports.b0f0f482cdeb5302b0b9.js"></script><script src="https://puc.poecdn.net/renderer.75c73ae6b4235f62945a.js"></script><script>Object.defineProperty(exports, "__esModule", {value: true}); function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }var _react = require('react'); var _react2 = _interopRequireDefault(_react);
+var _lucidereact = require('lucide-react');
+
+ function GEPAInfographic() {
+  const [showDeepDive, setShowDeepDive] = _react.useState.call(void 0, false);
+  
+  const performanceData = [
+    { task: 'HotpotQA', grpo: 65, gepa: 75, improvement: '+15%' },
+    { task: 'IFBench', grpo: 55, gepa: 65, improvement: '+19%' },
+    { task: 'PUPA', grpo: 70, gepa: 75, improvement: '+7%' },
+    { task: 'HoVer', grpo: 60, gepa: 67, improvement: '+12%' }
+  ];
+
+  const efficiencyMetrics = [
+    { metric: 'Rollouts Used', grpo: '24,000', gepa: '680', ratio: '35x fewer' },
+    { metric: 'Performance', grpo: '65%', gepa: '75%', ratio: '+10% better' },
+    { metric: 'Time to Peak', grpo: '24K rollouts', gepa: '179 rollouts', ratio: '78x faster' }
+  ];
+
+  const detailedResults = [
+    { task: 'HotpotQA', model: 'Qwen3 8B', baseline: '42.33%', gepa: '62.33%', improvement: '+20pts' },
+    { task: 'HotpotQA', model: 'GPT-4.1 mini', baseline: '38.00%', gepa: '69.00%', improvement: '+31pts' },
+    { task: 'PUPA', model: 'Qwen3 8B', baseline: '80.82%', gepa: '91.85%', improvement: '+11pts' },
+    { task: 'PUPA', model: 'GPT-4.1 mini', baseline: '78.57%', gepa: '94.47%', improvement: '+16pts' }
+  ];
+
+  const codeGenerationResults = [
+    { system: 'Sequential10', utilization: '4.25%', description: 'Baseline sequential refinement' },
+    { system: 'Sequential10+RAG', utilization: '16.33%', description: 'With retrieval augmentation' },
+    { system: 'Sequential10+RAG+MIPROv2', utilization: '19.03%', description: 'Adding MIPROv2 optimization' },
+    { system: 'GEPA', utilization: '30.52%', description: 'GEPA without RAG' },
+    { system: 'GEPA Best-1', utilization: '26.85%', description: 'Single GEPA-optimized prompt' }
+  ];
+
+  return (
+    _react2.default.createElement('div', { className: "min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 p-8"     ,}
+      , _react2.default.createElement('div', { className: "max-w-6xl mx-auto space-y-8"  ,}
+
+        /* Header */
+        , _react2.default.createElement('div', { className: "text-center space-y-4" ,}
+          , _react2.default.createElement('div', { className: "inline-flex items-center gap-3 bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-3 rounded-full"        ,}
+            , _react2.default.createElement(_lucidereact.Brain, { className: "w-6 h-6 text-white"  ,} )
+            , _react2.default.createElement('span', { className: "text-white font-bold text-lg"  ,}, "GEPA Research Breakthrough"  )
+          )
+          , _react2.default.createElement('h1', { className: "text-5xl font-bold text-white leading-tight"   ,}, "Reflective Prompt Evolution"
+              , _react2.default.createElement('br', null )
+            , _react2.default.createElement('span', { className: "bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"    ,}, "Outperforms Reinforcement Learning"
+
+            )
+          )
+          , _react2.default.createElement('p', { className: "text-xl text-gray-300 max-w-3xl mx-auto"   ,}, "GEPA (Genetic-Pareto) achieves superior performance with 35x fewer rollouts by using natural language reflection"
+
+          )
+        )
+
+        /* Key Innovation Section */
+        , _react2.default.createElement('div', { className: "grid grid-cols-1 lg:grid-cols-3 gap-6"   ,}
+          , _react2.default.createElement('div', { className: "bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20"     ,}
+            , _react2.default.createElement('div', { className: "flex items-center gap-3 mb-4"   ,}
+              , _react2.default.createElement(_lucidereact.RefreshCw, { className: "w-8 h-8 text-blue-400"  ,} )
+              , _react2.default.createElement('h3', { className: "text-xl font-bold text-white"  ,}, "Genetic Evolution" )
+            )
+            , _react2.default.createElement('p', { className: "text-gray-300",}, "Maintains candidate pool of system parameters, iteratively proposing improvements through mutations guided by reflection"
+
+            )
+          )
+
+          , _react2.default.createElement('div', { className: "bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20"     ,}
+            , _react2.default.createElement('div', { className: "flex items-center gap-3 mb-4"   ,}
+              , _react2.default.createElement(_lucidereact.Brain, { className: "w-8 h-8 text-purple-400"  ,} )
+              , _react2.default.createElement('h3', { className: "text-xl font-bold text-white"  ,}, "Reflective Mutation" )
+            )
+            , _react2.default.createElement('p', { className: "text-gray-300",}, "Uses natural language feedback from execution traces to identify issues and propose targeted prompt updates"
+
+            )
+          )
+
+          , _react2.default.createElement('div', { className: "bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20"     ,}
+            , _react2.default.createElement('div', { className: "flex items-center gap-3 mb-4"   ,}
+              , _react2.default.createElement(_lucidereact.Target, { className: "w-8 h-8 text-green-400"  ,} )
+              , _react2.default.createElement('h3', { className: "text-xl font-bold text-white"  ,}, "Pareto Selection" )
+            )
+            , _react2.default.createElement('p', { className: "text-gray-300",}, "Maintains diverse strategies by selecting from Pareto frontier of non-dominated candidates across task instances"
+
+            )
+          )
+        )
+
+        /* Performance Comparison */
+        , _react2.default.createElement('div', { className: "bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20"     ,}
+          , _react2.default.createElement('h2', { className: "text-3xl font-bold text-white mb-6 flex items-center gap-3"      ,}
+            , _react2.default.createElement(_lucidereact.TrendingUp, { className: "w-8 h-8 text-green-400"  ,} ), "Performance Breakthrough"
+
+          )
+
+          , _react2.default.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 gap-8"   ,}
+            , _react2.default.createElement('div', null
+              , _react2.default.createElement('h3', { className: "text-xl font-semibold text-white mb-4"   ,}, "Task Performance Comparison"  )
+              , _react2.default.createElement('div', { className: "space-y-4",}
+                , performanceData.map((item, idx) => (
+                  _react2.default.createElement('div', { key: idx, className: "space-y-2",}
+                    , _react2.default.createElement('div', { className: "flex justify-between items-center"  ,}
+                      , _react2.default.createElement('span', { className: "text-gray-300",}, item.task)
+                      , _react2.default.createElement('span', { className: "text-green-400 font-bold" ,}, item.improvement)
+                    )
+                    , _react2.default.createElement('div', { className: "flex gap-2" ,}
+                      , _react2.default.createElement('div', { className: "flex-1 bg-gray-700 rounded-full h-3 relative overflow-hidden"     ,}
+                        , _react2.default.createElement('div', { 
+                          className: "h-full bg-red-500 rounded-full"  , 
+                          style: {width: `${(item.grpo/100)*100}%`},}
+                        )
+                        , _react2.default.createElement('div', { className: "absolute top-0 left-0 w-full h-full flex items-center justify-center text-xs text-white font-bold"          ,}, "GRPO: "
+                           , item.grpo, "%"
+                        )
+                      )
+                      , _react2.default.createElement('div', { className: "flex-1 bg-gray-700 rounded-full h-3 relative overflow-hidden"     ,}
+                        , _react2.default.createElement('div', { 
+                          className: "h-full bg-blue-500 rounded-full"  , 
+                          style: {width: `${(item.gepa/100)*100}%`},}
+                        )
+                        , _react2.default.createElement('div', { className: "absolute top-0 left-0 w-full h-full flex items-center justify-center text-xs text-white font-bold"          ,}, "GEPA: "
+                           , item.gepa, "%"
+                        )
+                      )
+                    )
+                  )
+                ))
+              )
+            )
+
+            , _react2.default.createElement('div', null
+              , _react2.default.createElement('h3', { className: "text-xl font-semibold text-white mb-4"   ,}, "Efficiency Metrics" )
+              , _react2.default.createElement('div', { className: "space-y-6",}
+                , efficiencyMetrics.map((item, idx) => (
+                  _react2.default.createElement('div', { key: idx, className: "bg-white/5 rounded-xl p-4"  ,}
+                    , _react2.default.createElement('div', { className: "text-gray-400 text-sm mb-1"  ,}, item.metric)
+                    , _react2.default.createElement('div', { className: "flex items-center justify-between"  ,}
+                      , _react2.default.createElement('div', { className: "text-center",}
+                        , _react2.default.createElement('div', { className: "text-red-400 font-bold" ,}, item.grpo)
+                        , _react2.default.createElement('div', { className: "text-xs text-gray-500" ,}, "GRPO")
+                      )
+                      , _react2.default.createElement(_lucidereact.ArrowRight, { className: "w-5 h-5 text-gray-400"  ,} )
+                      , _react2.default.createElement('div', { className: "text-center",}
+                        , _react2.default.createElement('div', { className: "text-blue-400 font-bold" ,}, item.gepa)
+                        , _react2.default.createElement('div', { className: "text-xs text-gray-500" ,}, "GEPA")
+                      )
+                      , _react2.default.createElement('div', { className: "text-green-400 font-bold text-lg"  ,}, item.ratio)
+                    )
+                  )
+                ))
+              )
+            )
+          )
+        )
+
+        /* Algorithm Workflow */
+        , _react2.default.createElement('div', { className: "bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20"     ,}
+          , _react2.default.createElement('h2', { className: "text-3xl font-bold text-white mb-6 flex items-center gap-3"      ,}
+            , _react2.default.createElement(_lucidereact.Layers, { className: "w-8 h-8 text-purple-400"  ,} ), "GEPA Algorithm Workflow"
+
+          )
+
+          , _react2.default.createElement('div', { className: "grid grid-cols-1 md:grid-cols-4 gap-4"   ,}
+            , _react2.default.createElement('div', { className: "bg-gradient-to-b from-blue-500/20 to-blue-600/20 rounded-xl p-6 border border-blue-400/30"      ,}
+              , _react2.default.createElement('div', { className: "w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mb-4 mx-auto"        ,}
+                , _react2.default.createElement('span', { className: "text-white font-bold" ,}, "1")
+              )
+              , _react2.default.createElement('h4', { className: "text-white font-semibold text-center mb-2"   ,}, "Sample Trajectories" )
+              , _react2.default.createElement('p', { className: "text-gray-300 text-sm text-center"  ,}, "Execute system on minibatch of examples"     )
+            )
+
+            , _react2.default.createElement('div', { className: "bg-gradient-to-b from-purple-500/20 to-purple-600/20 rounded-xl p-6 border border-purple-400/30"      ,}
+              , _react2.default.createElement('div', { className: "w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mb-4 mx-auto"        ,}
+                , _react2.default.createElement('span', { className: "text-white font-bold" ,}, "2")
+              )
+              , _react2.default.createElement('h4', { className: "text-white font-semibold text-center mb-2"   ,}, "Reflect on Issues"  )
+              , _react2.default.createElement('p', { className: "text-gray-300 text-sm text-center"  ,}, "Analyze execution traces in natural language"     )
+            )
+
+            , _react2.default.createElement('div', { className: "bg-gradient-to-b from-green-500/20 to-green-600/20 rounded-xl p-6 border border-green-400/30"      ,}
+              , _react2.default.createElement('div', { className: "w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mb-4 mx-auto"        ,}
+                , _react2.default.createElement('span', { className: "text-white font-bold" ,}, "3")
+              )
+              , _react2.default.createElement('h4', { className: "text-white font-semibold text-center mb-2"   ,}, "Propose Updates" )
+              , _react2.default.createElement('p', { className: "text-gray-300 text-sm text-center"  ,}, "Generate targeted prompt improvements"   )
+            )
+
+            , _react2.default.createElement('div', { className: "bg-gradient-to-b from-orange-500/20 to-orange-600/20 rounded-xl p-6 border border-orange-400/30"      ,}
+              , _react2.default.createElement('div', { className: "w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center mb-4 mx-auto"        ,}
+                , _react2.default.createElement('span', { className: "text-white font-bold" ,}, "4")
+              )
+              , _react2.default.createElement('h4', { className: "text-white font-semibold text-center mb-2"   ,}, "Pareto Selection" )
+              , _react2.default.createElement('p', { className: "text-gray-300 text-sm text-center"  ,}, "Select optimal candidates from frontier"    )
+            )
+          )
+        )
+
+        /* Deep Dive Toggle */
+        , _react2.default.createElement('div', { className: "text-center",}
+          , _react2.default.createElement('button', {
+            onClick: () => setShowDeepDive(!showDeepDive),
+            className: "inline-flex items-center gap-3 bg-gradient-to-r from-purple-600 to-blue-600 px-8 py-4 rounded-xl text-white font-bold text-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-300"               ,}
+
+            , _react2.default.createElement(_lucidereact.Microscope, { className: "w-6 h-6" ,} )
+            , showDeepDive ? 'Hide' : 'Show', " Technical Deep Dive"
+            , showDeepDive ? _react2.default.createElement(_lucidereact.ChevronUp, { className: "w-6 h-6" ,} ) : _react2.default.createElement(_lucidereact.ChevronDown, { className: "w-6 h-6" ,} )
+          )
+        )
+
+        /* Deep Dive Section */
+        , showDeepDive && (
+          _react2.default.createElement('div', { className: "space-y-8 border-t border-white/20 pt-8"   ,}
+
+            /* Theoretical Framework */
+            , _react2.default.createElement('div', { className: "bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20"     ,}
+              , _react2.default.createElement('h2', { className: "text-3xl font-bold text-white mb-6 flex items-center gap-3"      ,}
+                , _react2.default.createElement(_lucidereact.Lightbulb, { className: "w-8 h-8 text-yellow-400"  ,} ), "Theoretical Framework & Motivation"
+
+              )
+
+              , _react2.default.createElement('div', { className: "grid grid-cols-1 lg:grid-cols-2 gap-8"   ,}
+                , _react2.default.createElement('div', { className: "space-y-6",}
+                  , _react2.default.createElement('div', { className: "bg-white/5 rounded-xl p-6"  ,}
+                    , _react2.default.createElement('h4', { className: "text-white font-semibold mb-3 flex items-center gap-2"     ,}
+                      , _react2.default.createElement(_lucidereact.Code, { className: "w-5 h-5 text-blue-400"  ,} ), "System Optimization Formalization"
+
+                    )
+                    , _react2.default.createElement('div', { className: "bg-gray-900/50 rounded-lg p-4 font-mono text-sm text-gray-300"     ,}
+                      , _react2.default.createElement('div', { className: "text-green-400",}, "⟨Π*, Θ*⟩_phi = arg max E[μ(Φ(x;⟨Π,Θ⟩), m)]"      )
+                      , _react2.default.createElement('div', { className: "text-yellow-400 mt-2" ,}, "subject to: #rollouts ≤ B"    )
+                    )
+                    , _react2.default.createElement('p', { className: "text-gray-300 text-sm mt-3"  ,}, "Where Π represents module prompts, Θ represents weights, and μ is the evaluation metric"
+
+                    )
+                  )
+
+                  , _react2.default.createElement('div', { className: "bg-white/5 rounded-xl p-6"  ,}
+                    , _react2.default.createElement('h4', { className: "text-white font-semibold mb-3"  ,}, "Key Insight" )
+                    , _react2.default.createElement('p', { className: "text-gray-300 text-sm" ,}, "LLM system trajectories contain far richer information than scalar rewards used in RL. These trajectories can be analyzed by language models to extract specific lessons and make targeted improvements."
+
+
+                    )
+                  )
+                )
+
+                , _react2.default.createElement('div', { className: "space-y-4",}
+                  , _react2.default.createElement('h4', { className: "text-white font-semibold mb-3"  ,}, "Theoretical Foundations" )
+                  , _react2.default.createElement('div', { className: "space-y-3",}
+                    , _react2.default.createElement('div', { className: "flex items-start gap-3"  ,}
+                      , _react2.default.createElement('div', { className: "w-2 h-2 bg-blue-400 rounded-full mt-2 flex-shrink-0"     ,} )
+                      , _react2.default.createElement('div', null
+                        , _react2.default.createElement('span', { className: "text-white font-medium" ,}, "Genetic Algorithms:" )
+                        , _react2.default.createElement('span', { className: "text-gray-300 text-sm ml-2"  ,}, "Population-based optimization with language-guided mutations"    )
+                      )
+                    )
+                    , _react2.default.createElement('div', { className: "flex items-start gap-3"  ,}
+                      , _react2.default.createElement('div', { className: "w-2 h-2 bg-purple-400 rounded-full mt-2 flex-shrink-0"     ,} )
+                      , _react2.default.createElement('div', null
+                        , _react2.default.createElement('span', { className: "text-white font-medium" ,}, "Multi-objective Optimization:" )
+                        , _react2.default.createElement('span', { className: "text-gray-300 text-sm ml-2"  ,}, "Pareto optimality maintains diverse solutions"    )
+                      )
+                    )
+                    , _react2.default.createElement('div', { className: "flex items-start gap-3"  ,}
+                      , _react2.default.createElement('div', { className: "w-2 h-2 bg-green-400 rounded-full mt-2 flex-shrink-0"     ,} )
+                      , _react2.default.createElement('div', null
+                        , _react2.default.createElement('span', { className: "text-white font-medium" ,}, "Natural Language Learning:"  )
+                        , _react2.default.createElement('span', { className: "text-gray-300 text-sm ml-2"  ,}, "Language as richer learning medium than scalar rewards"       )
+                      )
+                    )
+                    , _react2.default.createElement('div', { className: "flex items-start gap-3"  ,}
+                      , _react2.default.createElement('div', { className: "w-2 h-2 bg-orange-400 rounded-full mt-2 flex-shrink-0"     ,} )
+                      , _react2.default.createElement('div', null
+                        , _react2.default.createElement('span', { className: "text-white font-medium" ,}, "Compound AI Systems:"  )
+                        , _react2.default.createElement('span', { className: "text-gray-300 text-sm ml-2"  ,}, "Modular architectures with orchestrated components"    )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+
+            /* Detailed Results Analysis */
+            , _react2.default.createElement('div', { className: "bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20"     ,}
+              , _react2.default.createElement('h2', { className: "text-3xl font-bold text-white mb-6 flex items-center gap-3"      ,}
+                , _react2.default.createElement(_lucidereact.BarChart3, { className: "w-8 h-8 text-green-400"  ,} ), "Detailed Results Analysis"
+
+              )
+
+              , _react2.default.createElement('div', { className: "grid grid-cols-1 lg:grid-cols-2 gap-8"   ,}
+                , _react2.default.createElement('div', null
+                  , _react2.default.createElement('h4', { className: "text-white font-semibold mb-4"  ,}, "Performance Across Tasks & Models"    )
+                  , _react2.default.createElement('div', { className: "space-y-3",}
+                    , detailedResults.map((item, idx) => (
+                      _react2.default.createElement('div', { key: idx, className: "bg-white/5 rounded-lg p-4"  ,}
+                        , _react2.default.createElement('div', { className: "flex justify-between items-center mb-2"   ,}
+                          , _react2.default.createElement('span', { className: "text-white font-medium" ,}, item.task)
+                          , _react2.default.createElement('span', { className: "text-green-400 font-bold" ,}, item.improvement)
+                        )
+                        , _react2.default.createElement('div', { className: "text-sm text-gray-400 mb-2"  ,}, item.model)
+                        , _react2.default.createElement('div', { className: "flex items-center gap-4 text-sm"   ,}
+                          , _react2.default.createElement('span', { className: "text-red-400",}, "Baseline: " , item.baseline)
+                          , _react2.default.createElement(_lucidereact.ArrowRight, { className: "w-4 h-4 text-gray-400"  ,} )
+                          , _react2.default.createElement('span', { className: "text-blue-400",}, "GEPA: " , item.gepa)
+                        )
+                      )
+                    ))
+                  )
+                )
+
+                , _react2.default.createElement('div', null
+                  , _react2.default.createElement('h4', { className: "text-white font-semibold mb-4"  ,}, "Rollout Efficiency Breakdown"  )
+                  , _react2.default.createElement('div', { className: "space-y-4",}
+                    , _react2.default.createElement('div', { className: "bg-white/5 rounded-lg p-4"  ,}
+                      , _react2.default.createElement('h5', { className: "text-white font-medium mb-2"  ,}, "HotpotQA Example" )
+                      , _react2.default.createElement('div', { className: "space-y-2 text-sm" ,}
+                        , _react2.default.createElement('div', { className: "flex justify-between" ,}
+                          , _react2.default.createElement('span', { className: "text-gray-400",}, "GRPO (24K rollouts):"  )
+                          , _react2.default.createElement('span', { className: "text-red-400",}, "43.33%")
+                        )
+                        , _react2.default.createElement('div', { className: "flex justify-between" ,}
+                          , _react2.default.createElement('span', { className: "text-gray-400",}, "GEPA (6.4K total):"  )
+                          , _react2.default.createElement('span', { className: "text-blue-400",}, "62.33%")
+                        )
+                        , _react2.default.createElement('div', { className: "flex justify-between" ,}
+                          , _react2.default.createElement('span', { className: "text-gray-400",}, "GEPA training only:"  )
+                          , _react2.default.createElement('span', { className: "text-green-400",}, "737 rollouts" )
+                        )
+                      )
+                    )
+
+                    , _react2.default.createElement('div', { className: "bg-white/5 rounded-lg p-4"  ,}
+                      , _react2.default.createElement('h5', { className: "text-white font-medium mb-2"  ,}, "IFBench Extreme Efficiency"  )
+                      , _react2.default.createElement('div', { className: "text-sm text-gray-300" ,}, "GEPA required only "
+                           , _react2.default.createElement('span', { className: "text-green-400 font-bold" ,}, "79 training rollouts"  ), "to achieve optimal performance vs GRPO's 24,000 rollouts"
+
+                      )
+                    )
+                  )
+                )
+              )
+            )
+
+            /* Code Generation Case Study */
+            , _react2.default.createElement('div', { className: "bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20"     ,}
+              , _react2.default.createElement('h2', { className: "text-3xl font-bold text-white mb-6 flex items-center gap-3"      ,}
+                , _react2.default.createElement(_lucidereact.Cpu, { className: "w-8 h-8 text-cyan-400"  ,} ), "Code Generation Case Study: NPU Kernels"
+
+              )
+
+              , _react2.default.createElement('div', { className: "grid grid-cols-1 lg:grid-cols-2 gap-8"   ,}
+                , _react2.default.createElement('div', null
+                  , _react2.default.createElement('h4', { className: "text-white font-semibold mb-4"  ,}, "Vector Utilization Results"  )
+                  , _react2.default.createElement('div', { className: "space-y-3",}
+                    , codeGenerationResults.map((item, idx) => (
+                      _react2.default.createElement('div', { key: idx, className: "bg-white/5 rounded-lg p-4"  ,}
+                        , _react2.default.createElement('div', { className: "flex justify-between items-center mb-2"   ,}
+                          , _react2.default.createElement('span', { className: "text-white font-medium" ,}, item.system)
+                          , _react2.default.createElement('span', { className: `font-bold ${
+                            parseFloat(item.utilization) > 25 ? 'text-green-400' : 
+                            parseFloat(item.utilization) > 15 ? 'text-yellow-400' : 'text-red-400'
+                          }`,}
+                            , item.utilization
+                          )
+                        )
+                        , _react2.default.createElement('div', { className: "text-sm text-gray-400" ,}, item.description)
+                        , _react2.default.createElement('div', { className: "mt-2 w-full bg-gray-700 rounded-full h-2"    ,}
+                          , _react2.default.createElement('div', { 
+                            className: `h-2 rounded-full ${
+                              parseFloat(item.utilization) > 25 ? 'bg-green-500' : 
+                              parseFloat(item.utilization) > 15 ? 'bg-yellow-500' : 'bg-red-500'
+                            }`,
+                            style: {width: `${Math.min(parseFloat(item.utilization) * 2, 100)}%`},}
+                          )
+                        )
+                      )
+                    ))
+                  )
+                )
+
+                , _react2.default.createElement('div', null
+                  , _react2.default.createElement('h4', { className: "text-white font-semibold mb-4"  ,}, "Key Insights" )
+                  , _react2.default.createElement('div', { className: "space-y-4",}
+                    , _react2.default.createElement('div', { className: "bg-white/5 rounded-lg p-4"  ,}
+                      , _react2.default.createElement('h5', { className: "text-green-400 font-medium mb-2"  ,}, "Dramatic Improvement" )
+                      , _react2.default.createElement('p', { className: "text-gray-300 text-sm" ,}, "GEPA boosted mean vector utilization from 4.25% to 30.52% without requiring retrieval augmentation (RAG) that other methods depend on."
+
+
+                      )
+                    )
+
+                    , _react2.default.createElement('div', { className: "bg-white/5 rounded-lg p-4"  ,}
+                      , _react2.default.createElement('h5', { className: "text-blue-400 font-medium mb-2"  ,}, "Single Prompt Power"  )
+                      , _react2.default.createElement('p', { className: "text-gray-300 text-sm" ,}, "A single GEPA-optimized prompt achieved 26.85% utilization, demonstrating the quality of learned optimization strategies."
+
+
+                      )
+                    )
+
+                    , _react2.default.createElement('div', { className: "bg-white/5 rounded-lg p-4"  ,}
+                      , _react2.default.createElement('h5', { className: "text-purple-400 font-medium mb-2"  ,}, "Peak Performance" )
+                      , _react2.default.createElement('p', { className: "text-gray-300 text-sm" ,}, "Individual kernels achieved utilization rates as high as 70%, showing GEPA's ability to find highly optimized solutions."
+
+
+                      )
+                    )
+                  )
+                )
+              )
+            )
+
+            /* Implementation Details */
+            , _react2.default.createElement('div', { className: "bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20"     ,}
+              , _react2.default.createElement('h2', { className: "text-3xl font-bold text-white mb-6 flex items-center gap-3"      ,}
+                , _react2.default.createElement(_lucidereact.Settings, { className: "w-8 h-8 text-orange-400"  ,} ), "Implementation Details & Hyperparameters"
+
+              )
+
+              , _react2.default.createElement('div', { className: "grid grid-cols-1 lg:grid-cols-3 gap-6"   ,}
+                , _react2.default.createElement('div', { className: "bg-white/5 rounded-xl p-6"  ,}
+                  , _react2.default.createElement('h4', { className: "text-white font-semibold mb-4 flex items-center gap-2"     ,}
+                    , _react2.default.createElement(_lucidereact.Brain, { className: "w-5 h-5 text-blue-400"  ,} ), "GEPA Configuration"
+
+                  )
+                  , _react2.default.createElement('div', { className: "space-y-2 text-sm" ,}
+                    , _react2.default.createElement('div', { className: "flex justify-between" ,}
+                      , _react2.default.createElement('span', { className: "text-gray-400",}, "Minibatch size:" )
+                      , _react2.default.createElement('span', { className: "text-white",}, "3")
+                    )
+                    , _react2.default.createElement('div', { className: "flex justify-between" ,}
+                      , _react2.default.createElement('span', { className: "text-gray-400",}, "Max merge invocations:"  )
+                      , _react2.default.createElement('span', { className: "text-white",}, "5")
+                    )
+                    , _react2.default.createElement('div', { className: "flex justify-between" ,}
+                      , _react2.default.createElement('span', { className: "text-gray-400",}, "Budget matching:" )
+                      , _react2.default.createElement('span', { className: "text-white",}, "MIPROv2")
+                    )
+                  )
+                )
+
+                , _react2.default.createElement('div', { className: "bg-white/5 rounded-xl p-6"  ,}
+                  , _react2.default.createElement('h4', { className: "text-white font-semibold mb-4 flex items-center gap-2"     ,}
+                    , _react2.default.createElement(_lucidereact.GitBranch, { className: "w-5 h-5 text-red-400"  ,} ), "GRPO Setup"
+
+                  )
+                  , _react2.default.createElement('div', { className: "space-y-2 text-sm" ,}
+                    , _react2.default.createElement('div', { className: "flex justify-between" ,}
+                      , _react2.default.createElement('span', { className: "text-gray-400",}, "Group size:" )
+                      , _react2.default.createElement('span', { className: "text-white",}, "12")
+                    )
+                    , _react2.default.createElement('div', { className: "flex justify-between" ,}
+                      , _react2.default.createElement('span', { className: "text-gray-400",}, "LoRA rank:" )
+                      , _react2.default.createElement('span', { className: "text-white",}, "16")
+                    )
+                    , _react2.default.createElement('div', { className: "flex justify-between" ,}
+                      , _react2.default.createElement('span', { className: "text-gray-400",}, "Learning rate:" )
+                      , _react2.default.createElement('span', { className: "text-white",}, "1×10⁻⁵")
+                    )
+                    , _react2.default.createElement('div', { className: "flex justify-between" ,}
+                      , _react2.default.createElement('span', { className: "text-gray-400",}, "Training steps:" )
+                      , _react2.default.createElement('span', { className: "text-white",}, "500")
+                    )
+                  )
+                )
+
+                , _react2.default.createElement('div', { className: "bg-white/5 rounded-xl p-6"  ,}
+                  , _react2.default.createElement('h4', { className: "text-white font-semibold mb-4 flex items-center gap-2"     ,}
+                    , _react2.default.createElement(_lucidereact.Target, { className: "w-5 h-5 text-green-400"  ,} ), "Model Parameters"
+
+                  )
+                  , _react2.default.createElement('div', { className: "space-y-2 text-sm" ,}
+                    , _react2.default.createElement('div', null
+                      , _react2.default.createElement('div', { className: "text-gray-400 mb-1" ,}, "Qwen3 8B:" )
+                      , _react2.default.createElement('div', { className: "text-white text-xs" ,}, "T=0.6, top-p=0.95, top-k=20"  )
+                    )
+                    , _react2.default.createElement('div', null
+                      , _react2.default.createElement('div', { className: "text-gray-400 mb-1" ,}, "GPT-4.1 mini:" )
+                      , _react2.default.createElement('div', { className: "text-white text-xs" ,}, "Temperature=1.0")
+                    )
+                  )
+                )
+              )
+            )
+
+            /* Future Directions */
+            , _react2.default.createElement('div', { className: "bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20"     ,}
+              , _react2.default.createElement('h2', { className: "text-3xl font-bold text-white mb-6 flex items-center gap-3"      ,}
+                , _react2.default.createElement(_lucidereact.Lightbulb, { className: "w-8 h-8 text-yellow-400"  ,} ), "Future Research Directions"
+
+              )
+
+              , _react2.default.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 gap-6"   ,}
+                , _react2.default.createElement('div', { className: "space-y-4",}
+                  , _react2.default.createElement('div', { className: "bg-white/5 rounded-lg p-4"  ,}
+                    , _react2.default.createElement('h4', { className: "text-blue-400 font-semibold mb-2"  ,}, "Hybrid Approaches" )
+                    , _react2.default.createElement('p', { className: "text-gray-300 text-sm" ,}, "Combining GEPA's language-based reflections with weight updates and using optimized prompts as starting points for fine-tuning."
+
+
+                    )
+                  )
+
+                  , _react2.default.createElement('div', { className: "bg-white/5 rounded-lg p-4"  ,}
+                    , _react2.default.createElement('h4', { className: "text-purple-400 font-semibold mb-2"  ,}, "Feedback Engineering" )
+                    , _react2.default.createElement('p', { className: "text-gray-300 text-sm" ,}, "Developing algorithms to identify the most informative parts of execution traces and generate counterfactual scenarios for testing."
+
+
+                    )
+                  )
+                )
+
+                , _react2.default.createElement('div', { className: "space-y-4",}
+                  , _react2.default.createElement('div', { className: "bg-white/5 rounded-lg p-4"  ,}
+                    , _react2.default.createElement('h4', { className: "text-green-400 font-semibold mb-2"  ,}, "Dynamic Validation" )
+                    , _react2.default.createElement('p', { className: "text-gray-300 text-sm" ,}, "More efficient validation strategies using uncertainty-based selection and progressive validation to reduce rollout budget requirements."
+
+
+                    )
+                  )
+
+                  , _react2.default.createElement('div', { className: "bg-white/5 rounded-lg p-4"  ,}
+                    , _react2.default.createElement('h4', { className: "text-orange-400 font-semibold mb-2"  ,}, "Meta-Learning")
+                    , _react2.default.createElement('p', { className: "text-gray-300 text-sm" ,}, "Learning generalizable prompt optimization strategies across tasks and understanding optimal boundaries between prompt and weight learning."
+
+
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+
+        /* Key Advantages */
+        , _react2.default.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 gap-6"   ,}
+          , _react2.default.createElement('div', { className: "bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20"     ,}
+            , _react2.default.createElement('h3', { className: "text-2xl font-bold text-white mb-4 flex items-center gap-3"      ,}
+              , _react2.default.createElement(_lucidereact.Zap, { className: "w-7 h-7 text-yellow-400"  ,} ), "Key Advantages"
+
+            )
+            , _react2.default.createElement('ul', { className: "space-y-3 text-gray-300" ,}
+              , _react2.default.createElement('li', { className: "flex items-start gap-3"  ,}
+                , _react2.default.createElement('div', { className: "w-2 h-2 bg-green-400 rounded-full mt-2 flex-shrink-0"     ,} )
+                , _react2.default.createElement('span', null, _react2.default.createElement('strong', { className: "text-white",}, "35x more sample efficient"   ), " than GRPO"  )
+              )
+              , _react2.default.createElement('li', { className: "flex items-start gap-3"  ,}
+                , _react2.default.createElement('div', { className: "w-2 h-2 bg-green-400 rounded-full mt-2 flex-shrink-0"     ,} )
+                , _react2.default.createElement('span', null, _react2.default.createElement('strong', { className: "text-white",}, "Interpretable optimization" ), " through natural language"   )
+              )
+              , _react2.default.createElement('li', { className: "flex items-start gap-3"  ,}
+                , _react2.default.createElement('div', { className: "w-2 h-2 bg-green-400 rounded-full mt-2 flex-shrink-0"     ,} )
+                , _react2.default.createElement('span', null, _react2.default.createElement('strong', { className: "text-white",}, "Works with frozen models"   ), " - no fine-tuning needed"    )
+              )
+              , _react2.default.createElement('li', { className: "flex items-start gap-3"  ,}
+                , _react2.default.createElement('div', { className: "w-2 h-2 bg-green-400 rounded-full mt-2 flex-shrink-0"     ,} )
+                , _react2.default.createElement('span', null, _react2.default.createElement('strong', { className: "text-white",}, "Task-agnostic approach" ), " across diverse domains"   )
+              )
+            )
+          )
+
+          , _react2.default.createElement('div', { className: "bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20"     ,}
+            , _react2.default.createElement('h3', { className: "text-2xl font-bold text-white mb-4 flex items-center gap-3"      ,}
+              , _react2.default.createElement(_lucidereact.Award, { className: "w-7 h-7 text-gold-400"  ,} ), "Results vs. Baselines"
+
+            )
+            , _react2.default.createElement('div', { className: "space-y-4",}
+              , _react2.default.createElement('div', { className: "bg-white/5 rounded-lg p-4"  ,}
+                , _react2.default.createElement('div', { className: "text-green-400 font-bold text-lg"  ,}, "+10% vs GRPO"  )
+                , _react2.default.createElement('div', { className: "text-gray-400 text-sm" ,}, "Average improvement across all tasks"    )
+              )
+              , _react2.default.createElement('div', { className: "bg-white/5 rounded-lg p-4"  ,}
+                , _react2.default.createElement('div', { className: "text-blue-400 font-bold text-lg"  ,}, "+14% vs MIPROv2"  )
+                , _react2.default.createElement('div', { className: "text-gray-400 text-sm" ,}, "Aggregate performance gains"  )
+              )
+              , _react2.default.createElement('div', { className: "bg-white/5 rounded-lg p-4"  ,}
+                , _react2.default.createElement('div', { className: "text-purple-400 font-bold text-lg"  ,}, "9.2x shorter prompts"  )
+                , _react2.default.createElement('div', { className: "text-gray-400 text-sm" ,}, "More concise than few-shot approaches"    )
+              )
+            )
+          )
+        )
+
+        /* Applications */
+        , _react2.default.createElement('div', { className: "bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20"     ,}
+          , _react2.default.createElement('h2', { className: "text-3xl font-bold text-white mb-6 flex items-center gap-3"      ,}
+            , _react2.default.createElement(_lucidereact.Cpu, { className: "w-8 h-8 text-cyan-400"  ,} ), "Real-World Applications"
+
+          )
+
+          , _react2.default.createElement('div', { className: "grid grid-cols-1 md:grid-cols-3 gap-6"   ,}
+            , _react2.default.createElement('div', { className: "text-center space-y-3" ,}
+              , _react2.default.createElement('div', { className: "w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto"       ,}
+                , _react2.default.createElement(_lucidereact.Brain, { className: "w-8 h-8 text-blue-400"  ,} )
+              )
+              , _react2.default.createElement('h4', { className: "text-white font-semibold" ,}, "Multi-Agent Systems" )
+              , _react2.default.createElement('p', { className: "text-gray-400 text-sm" ,}, "Optimize complex AI workflows with multiple LLM components"       )
+            )
+
+            , _react2.default.createElement('div', { className: "text-center space-y-3" ,}
+              , _react2.default.createElement('div', { className: "w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto"       ,}
+                , _react2.default.createElement(_lucidereact.Cpu, { className: "w-8 h-8 text-purple-400"  ,} )
+              )
+              , _react2.default.createElement('h4', { className: "text-white font-semibold" ,}, "Code Generation" )
+              , _react2.default.createElement('p', { className: "text-gray-400 text-sm" ,}, "Improve NPU/CUDA kernel generation from 4% to 30% efficiency"        )
+            )
+
+            , _react2.default.createElement('div', { className: "text-center space-y-3" ,}
+              , _react2.default.createElement('div', { className: "w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto"       ,}
+                , _react2.default.createElement(_lucidereact.Zap, { className: "w-8 h-8 text-green-400"  ,} )
+              )
+              , _react2.default.createElement('h4', { className: "text-white font-semibold" ,}, "Resource-Limited Scenarios" )
+              , _react2.default.createElement('p', { className: "text-gray-400 text-sm" ,}, "Effective optimization when rollouts are expensive or limited"       )
+            )
+          )
+        )
+
+        /* Footer */
+        , _react2.default.createElement('div', { className: "text-center text-gray-400 pt-6 border-t border-white/20"    ,}
+          , _react2.default.createElement('p', { className: "text-lg",}
+            , _react2.default.createElement('strong', { className: "text-white",}, "GEPA"), " demonstrates that reflective evolution can outperform reinforcement learning"
+          )
+          , _react2.default.createElement('p', { className: "text-sm mt-2" ,}, "Revolutionary approach to AI system optimization through natural language feedback"
+
+          )
+        )
+      )
+    )
+  );
+} exports.default = GEPAInfographic;
+</script></head>
+  <body>
+  
+
+<div id="preview-app"></div></body></html>
